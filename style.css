@@ -1,0 +1,185 @@
+/* ── Variables de paleta tierra misionera ── */
+    :root {
+      --verde-900: #071A10;
+      --verde-800: #0F2B1A;
+      --verde-700: #1B3A2A;
+      --verde-600: #2D6A4F;
+      --verde-500: #40916C;
+      --verde-400: #52B788;
+      --ocre-500:  #C9A84C;
+      --ocre-400:  #D4BA6A;
+      --tierra:    #5C2E0A;
+      --roja:      #8B1A0A;
+      
+      /* Variables Premium Glassmorphism */
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-highlight: rgba(255, 255, 255, 0.2);
+      --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    /* ── Fondo degradado tierra roja + monte misionero ── */
+    body {
+      background:
+        radial-gradient(ellipse at 10% 0%, rgba(45, 106, 79, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 100%, rgba(139, 26, 10, 0.4) 0%, transparent 50%),
+        linear-gradient(160deg, var(--verde-900) 0%, var(--verde-800) 35%, var(--verde-700) 60%, #3D1505 85%, #5C1000 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Glassmorphism Premium ── */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-top: 1px solid var(--glass-highlight); /* Toque de luz superior */
+      box-shadow: var(--glass-shadow);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-header {
+      background: rgba(7, 26, 16, 0.75);
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .glass-proximo {
+      background: linear-gradient(135deg, rgba(201, 168, 76, 0.15) 0%, rgba(139, 26, 10, 0.15) 100%);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-top: 1px solid rgba(201, 168, 76, 0.5); /* Reflejo dorado */
+      box-shadow: 0 10px 40px rgba(201, 168, 76, 0.15), inset 0 0 20px rgba(201, 168, 76, 0.05);
+    }
+
+    /* ── Filtros pill (Botones interactivos) ── */
+    .filter-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .filter-pill:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .filter-pill.active {
+      background: rgba(201, 168, 76, 0.25);
+      border-color: var(--ocre-500);
+      color: var(--ocre-400);
+      box-shadow: 0 0 15px rgba(201, 168, 76, 0.25);
+    }
+    .filter-pill:active {
+      transform: scale(0.92);
+    }
+
+    /* ── Selectores del Buscador (El toque pro) ── */
+    .select-glass {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-top: 1px solid var(--glass-highlight);
+      outline: none;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .select-glass:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .select-glass:focus {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--ocre-500);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.25);
+    }
+    .select-glass option {
+      background: var(--verde-800);
+      color: white;
+      font-weight: 500;
+    }
+
+    /* ── Animaciones premium fluidas ── */
+    .card-enter {
+      animation: cardSlideIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+    @keyframes cardSlideIn {
+      0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .skeleton {
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.03) 25%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 255, 255, 0.03) 75%
+      );
+      background-size: 200% 100%;
+      animation: skeletonPulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    @keyframes skeletonPulse {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .pulse-dot {
+      animation: pulseGlow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.5); }
+      50% { opacity: 0.6; box-shadow: 0 0 0 8px rgba(201, 168, 76, 0); }
+    }
+
+    .badge-proximo {
+      animation: badgePulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(201, 168, 76, 0); }
+    }
+
+    #install-banner {
+      animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+    @keyframes slideUp {
+      0% { transform: translateY(100%); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ── Touch feedback en tarjetas (Efecto resorte) ── */
+    .touch-feedback {
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+    .touch-feedback:active {
+      transform: scale(0.96);
+    }
+    @media (hover: hover) {
+      .touch-feedback:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    /* ── Utilidades de Scroll elegantes ── */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
+
+    .noscroll {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .noscroll::-webkit-scrollbar { display: none; }
+
+    .transition-smooth { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }

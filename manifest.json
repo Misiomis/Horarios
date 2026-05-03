@@ -1,0 +1,44 @@
+{
+  "name": "Horarios Colectivo Andresito",
+  "short_name": "Andresito Bus",
+  "description": "Consulta de horarios de colectivos de Comandante Andresito, Misiones, Argentina",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#071A10",
+  "theme_color": "#1B3A2A",
+  "lang": "es-AR",
+  "categories": ["transportation", "travel"],
+  "icons": [
+    {
+      "src": "img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Horarios a Iguazú",
+      "short_name": "Iguazú",
+      "description": "Ver horarios hacia Puerto Iguazú",
+      "url": "./?destino=iguazu",
+      "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Horarios a Posadas",
+      "short_name": "Posadas",
+      "description": "Ver horarios hacia Posadas",
+      "url": "./?destino=posadas",
+      "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

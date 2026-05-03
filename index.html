@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- PWA / SEO meta -->
+  <meta name="description" content="Consulta de horarios de colectivos de Comandante Andresito, Misiones. Kenia, Expreso Singer, Crucero del Norte y Horianski.">
+  <meta name="theme-color" content="#1B3A2A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Andresito Bus">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Horarios de Colectivo — Andresito">
+  <meta property="og:description" content="Consultá en tiempo real los horarios de colectivos desde Comandante Andresito.">
+  <meta property="og:type" content="website">
+
+  <!-- PWA manifest e íconos -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="img/icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+
+  <title>Horarios Andresito · Colectivos</title>
+
+  <!-- Tipografía Inter (se cachea en el SW) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN con configuración personalizada -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ── Variables de paleta tierra misionera ── */
+    :root {
+      --verde-900: #071A10;
+      --verde-800: #0F2B1A;
+      --verde-700: #1B3A2A;
+      --verde-600: #2D6A4F;
+      --verde-500: #40916C;
+      --verde-400: #52B788;
+      --ocre-500:  #C9A84C;
+      --ocre-400:  #D4BA6A;
+      --tierra:    #5C2E0A;
+      --roja:      #8B1A0A;
+    }
+
+    /* ── Fondo degradado tierra roja + monte misionero ── */
+    body {
+      background:
+        radial-gradient(ellipse at 20% 0%,   rgba(45,106,79,.35) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 100%,  rgba(139,26,10,.40) 0%, transparent 55%),
+        linear-gradient(160deg, #071A10 0%, #0F2B1A 35%, #1B3A2A 60%, #3D1505 85%, #5C1000 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Glassmorphism ── */
+    .glass {
+      background: rgba(255,255,255,.065);
+      backdrop-filter: blur(22px) saturate(150%);
+      -webkit-backdrop-filter: blur(22px) saturate(150%);
+      border: 1px solid rgba(255,255,255,.11);
+    }
+
+    .glass-header {
+      background: rgba(7,26,16,.82);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .glass-proximo {
+      background: linear-gradient(135deg,rgba(201,168,76,.18) 0%,rgba(139,26,10,.15) 100%);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(201,168,76,.32);
+      box-shadow: 0 0 40px rgba(201,168,76,.1), 0 20px 50px rgba(0,0,0,.35);
+    }
+
+    /* ── Filtros pill ── */
+    .filter-pill {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.10);
+      transition: background .2s, border-color .2s, color .2s, transform .15s;
+    }
+    .filter-pill.active {
+      background: rgba(201,168,76,.2);
+      border-color: rgba(201,168,76,.45);
+      color: #D4BA6A;
+    }
+    .filter-pill:active  { transform: scale(.94); }
+
+    /* ── Animación de entrada de tarjetas ── */
+    .card-enter {
+      animation: cardSlideIn .4s cubic-bezier(.25,.46,.45,.94) both;
+      opacity: 0;
+    }
+    @keyframes cardSlideIn {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0);    }
+    }
+
+    /* ── Skeleton loader ── */
+    .skeleton {
+      background: linear-gradient(
+        90deg,
+        rgba(255,255,255,.04) 25%,
+        rgba(255,255,255,.09) 50%,
+        rgba(255,255,255,.04) 75%
+      );
+      background-size: 200% 100%;
+      animation: skeletonPulse 1.6s ease infinite;
+    }
+    @keyframes skeletonPulse {
+      0%   { background-position: 200% 0; }
+      100% { background-position:-200% 0; }
+    }
+
+    /* ── Pulso del próximo servicio ── */
+    .pulse-dot {
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(201,168,76,.6); }
+      50%     { opacity:.5; box-shadow:0 0 0 6px rgba(201,168,76,0); }
+    }
+
+    /* ── Badge del próximo ── */
+    .badge-proximo {
+      animation: badgePulse 3s ease infinite;
+    }
+    @keyframes badgePulse {
+      0%,100% { box-shadow:0 0 0 0 rgba(201,168,76,.4); }
+      50%     { box-shadow:0 0 0 6px rgba(201,168,76,0); }
+    }
+
+    /* ── Banner de instalación ── */
+    #install-banner { animation: slideUp .45s cubic-bezier(.25,.46,.45,.94) both; }
+    @keyframes slideUp {
+      from { transform:translateY(100%); opacity:0; }
+      to   { transform:translateY(0);   opacity:1; }
+    }
+
+    /* ── Touch feedback en tarjetas ── */
+    .touch-feedback { transition: transform .15s, box-shadow .15s; }
+    .touch-feedback:active { transform: scale(.978); }
+
+    /* ── Scrollbar personalizado ── */
+    ::-webkit-scrollbar        { width:3px; }
+    ::-webkit-scrollbar-track  { background:transparent; }
+    ::-webkit-scrollbar-thumb  { background:rgba(255,255,255,.15); border-radius:2px; }
+
+    /* Ocultar scrollbar en filtros horizontales */
+    .noscroll               { scrollbar-width:none; }
+    .noscroll::-webkit-scrollbar { display:none; }
+
+    .transition-smooth { transition: all .28s cubic-bezier(.4,0,.2,1); }
+
+    /* ── Select glassmorphism ── */
+    .select-glass {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      outline: none;
+      transition: border-color .2s, background .2s;
+    }
+    .select-glass:focus {
+      background: rgba(255,255,255,.10);
+      border-color: rgba(201,168,76,.45);
+    }
+    .select-glass option {
+      background: #1B3A2A;
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="font-sans text-white antialiased select-none">
+
+  <!-- ══════════════════════════════════════
+       HEADER FIJO
+       ══════════════════════════════════════ -->
+  <header class="glass-header sticky top-0 z-50 px-4 py-3 safe-area-top">
+    <div class="max-w-lg mx-auto flex items-center justify-between">
+
+      <!-- Logo + nombre -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0"
+             style="background:linear-gradient(135deg,#C9A84C,#8B1A0A)">
+          <!-- Ícono de bus (Heroicons) -->
+          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8 7h8M8 11h8M5 17H3v-1a2 2 0 012-2h14a2 2 0 012 2v1h-2M5 17v2h14v-2M5 17H3M19 17h2M7 17a1 1 0 100 2 1 1 0 000-2zm10 0a1 1 0 100 2 1 1 0 000-2zM5 4h14a2 2 0 012 2v7H3V6a2 2 0 012-2z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-base font-bold leading-tight">Andresito Bus</h1>
+          <p class="text-[11px] text-white/45 leading-tight">Cdte. Andresito · Misiones</p>
+        </div>
+      </div>
+
+      <!-- Reloj en tiempo real -->
+      <div class="text-right">
+        <p id="reloj"       class="text-2xl font-black tracking-tight leading-none">--:--</p>
+        <p id="reloj-fecha" class="text-[11px] text-white/45 mt-0.5 capitalize"></p>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ══════════════════════════════════════
+       CONTENIDO PRINCIPAL
+       ══════════════════════════════════════ -->
+  <main class="max-w-lg mx-auto px-4 pt-5 pb-32 space-y-5">
+
+    <!-- ── Banner del día vigente ── -->
+    <section class="glass rounded-3xl p-5 shadow-xl">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex-1 min-w-0">
+          <p class="text-[10px] font-semibold text-white/40 uppercase tracking-widest mb-1">
+            Horarios vigentes hoy
+          </p>
+          <h2 id="tipo-dia-texto" class="text-2xl font-black leading-tight">Cargando…</h2>
+          <p id="tipo-dia-desc"   class="text-xs text-white/50 mt-0.5"></p>
+          <p id="fecha-completa"  class="text-xs text-white/35 mt-1 capitalize"></p>
+        </div>
+        <div id="icono-dia" class="text-4xl flex-shrink-0">🗓️</div>
+      </div>
+    </section>
+
+
+    <!-- ── Próximo servicio (visible si hay alguno pendiente) ── -->
+    <section id="seccion-proximo" class="hidden">
+      <p class="text-[10px] font-semibold text-white/35 uppercase tracking-widest mb-2.5 px-1">
+        ⚡ Próximo en partir
+      </p>
+      <div id="proximo-card"
+           class="glass-proximo rounded-3xl p-5 touch-feedback transition-smooth cursor-pointer">
+        <!-- Renderizado por app.js -->
+      </div>
+    </section>
+
+
+    <!-- ── Buscador Origen / Destino ── -->
+    <section class="glass rounded-3xl p-5 shadow-xl">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-[10px] font-semibold text-white/35 uppercase tracking-widest mb-0.5">
+            Buscador de rutas
+          </p>
+          <p class="text-sm font-semibold text-white/70">¿A dónde vas?</p>
+        </div>
+        <!-- Badge de búsqueda activa -->
+        <div id="od-badge"
+             class="hidden flex items-center gap-1.5 rounded-full px-3 py-1.5"
+             style="background:rgba(201,168,76,.2);border:1px solid rgba(201,168,76,.35)">
+          <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#C9A84C"></span>
+          <span id="od-badge-texto" class="text-[11px] font-semibold" style="color:#D4BA6A"></span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+
+        <!-- Origen -->
+        <div class="relative">
+          <label class="text-[10px] text-white/35 uppercase tracking-widest block mb-1.5 px-1">
+            Origen
+          </label>
+          <select id="select-origen"
+                  class="select-glass w-full rounded-2xl px-4 py-3 pr-10 text-sm text-white appearance-none cursor-pointer">
+            <option value="">Cualquier punto de salida</option>
+          </select>
+          <div class="pointer-events-none absolute right-3.5 bottom-3.5">
+            <svg class="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Botón intercambiar -->
+        <div class="flex items-center gap-3">
+          <div class="flex-1 h-px" style="background:rgba(255,255,255,.08)"></div>
+          <button id="btn-swap-od"
+                  class="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0 touch-feedback transition-smooth"
+                  style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)"
+                  aria-label="Intercambiar origen y destino">
+            <svg class="w-4 h-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+            </svg>
+          </button>
+          <div class="flex-1 h-px" style="background:rgba(255,255,255,.08)"></div>
+        </div>
+
+        <!-- Destino -->
+        <div class="relative">
+          <label class="text-[10px] text-white/35 uppercase tracking-widest block mb-1.5 px-1">
+            Destino
+          </label>
+          <select id="select-destino"
+                  class="select-glass w-full rounded-2xl px-4 py-3 pr-10 text-sm text-white appearance-none cursor-pointer">
+            <option value="">Cualquier destino</option>
+          </select>
+          <div class="pointer-events-none absolute right-3.5 bottom-3.5">
+            <svg class="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Limpiar búsqueda -->
+        <button id="btn-limpiar-od"
+                class="hidden w-full py-2.5 rounded-2xl text-xs font-semibold touch-feedback transition-smooth"
+                style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);color:rgba(255,255,255,.5)">
+          ✕ &nbsp;Limpiar búsqueda
+        </button>
+
+      </div>
+    </section>
+
+
+    <!-- ── Filtros por destino ── -->
+    <section id="seccion-filtros-destino">
+      <p class="text-[10px] font-semibold text-white/35 uppercase tracking-widest mb-2.5 px-1">
+        Filtrar por destino
+      </p>
+      <div id="filtros-destino"
+           class="flex gap-2 overflow-x-auto noscroll pb-0.5">
+        <!-- Renderizado por app.js -->
+      </div>
+    </section>
+
+
+    <!-- ── Filtros por empresa ── -->
+    <section id="seccion-filtros-empresa">
+      <p class="text-[10px] font-semibold text-white/35 uppercase tracking-widest mb-2.5 px-1">
+        Empresa
+      </p>
+      <div id="filtros-empresa"
+           class="flex gap-2 overflow-x-auto noscroll pb-0.5">
+        <!-- Renderizado por app.js -->
+      </div>
+    </section>
+
+
+    <!-- ── Listado de horarios ── -->
+    <section>
+      <div class="flex items-center justify-between mb-2.5 px-1">
+        <p class="text-[10px] font-semibold text-white/35 uppercase tracking-widest">
+          Horarios del día
+        </p>
+        <span id="contador-resultados" class="text-[11px] text-white/35">—</span>
+      </div>
+
+      <!-- Skeleton loaders (visibles durante la carga inicial) -->
+      <div id="skeletons" class="space-y-3">
+        <div class="glass rounded-3xl h-[88px] skeleton"></div>
+        <div class="glass rounded-3xl h-[88px] skeleton" style="opacity:.85"></div>
+        <div class="glass rounded-3xl h-[88px] skeleton" style="opacity:.7"></div>
+        <div class="glass rounded-3xl h-[88px] skeleton" style="opacity:.55"></div>
+        <div class="glass rounded-3xl h-[88px] skeleton" style="opacity:.4"></div>
+      </div>
+
+      <!-- Tarjetas reales (generadas por app.js) -->
+      <div id="horarios-container" class="space-y-3 hidden">
+        <!-- Renderizado dinámico -->
+      </div>
+
+      <!-- Estado vacío -->
+      <div id="estado-vacio" class="hidden">
+        <div class="glass rounded-3xl p-10 text-center">
+          <div class="text-5xl mb-4">🚌</div>
+          <p class="font-semibold text-white/75">No hay servicios disponibles</p>
+          <p id="vacio-mensaje" class="text-sm text-white/40 mt-2">Probá con otro filtro o destino</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ── Aviso offline ── -->
+    <div id="aviso-offline" class="hidden">
+      <div class="glass rounded-2xl px-4 py-3 flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+             style="background:rgba(82,183,136,.2)">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-emerald-400">Modo sin conexión activo</p>
+          <p class="text-[11px] text-white/40">Mostrando datos desde caché local</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── Leyenda de empresas ── -->
+    <section class="glass rounded-3xl p-5">
+      <p class="text-[10px] font-semibold text-white/35 uppercase tracking-widest mb-4">
+        Empresas operadoras
+      </p>
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Kruse -->
+        <div class="rounded-2xl p-3" style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2)">
+          <p class="text-sm font-bold" style="color:#A78BFA">🟣 Kruse</p>
+          <p class="text-[11px] text-white/40 mt-0.5">Larga distancia · cama</p>
+          <p class="text-[10px] mt-1" style="color:rgba(252,211,77,.6)">⚠️ L–S (no domingos)</p>
+        </div>
+        <!-- Expreso de la Selva -->
+        <div class="rounded-2xl p-3" style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2)">
+          <p class="text-sm font-bold" style="color:#38BDF8">🔵 Expreso de la Selva</p>
+          <p class="text-[11px] text-white/40 mt-0.5">Regional · larga dist.</p>
+        </div>
+        <!-- Sol del Norte -->
+        <div class="rounded-2xl p-3" style="background:rgba(252,211,77,.1);border:1px solid rgba(252,211,77,.2)">
+          <p class="text-sm font-bold" style="color:#FCD34D">🟡 Sol del Norte</p>
+          <p class="text-[11px] text-white/40 mt-0.5">Interurbano · regional</p>
+        </div>
+        <!-- Kenia -->
+        <div class="rounded-2xl p-3" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2)">
+          <p class="text-sm font-bold" style="color:#F87171">🔴 Kenia</p>
+          <p class="text-[11px] text-white/40 mt-0.5">Interurbano</p>
+        </div>
+        <!-- Empresa Piñalito Norte -->
+        <div class="rounded-2xl p-3 col-span-2" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2)">
+          <p class="text-sm font-bold" style="color:#34D399">🟢 Empresa Piñalito Norte</p>
+          <p class="text-[11px] text-white/40 mt-0.5">Interurbano local · regional</p>
+        </div>
+        <!-- Empresa Itatí -->
+        <div class="rounded-2xl p-3 col-span-2" style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.2)">
+          <p class="text-sm font-bold" style="color:#FB923C">🟠 Empresa Itatí</p>
+          <p class="text-[11px] text-white/40 mt-0.5">Ruta 24 · San Pedro · San Vicente</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ── Footer ── -->
+    <footer class="text-center py-4">
+      <p class="text-[11px] text-white/20 leading-relaxed">
+        Municipio de Comandante Andresito · Misiones, Argentina
+      </p>
+      <p class="text-[10px] text-white/12 mt-1">
+        Datos orientativos · v1.0.0 · 2025
+      </p>
+    </footer>
+
+  </main>
+
+
+  <!-- ══════════════════════════════════════
+       BANNER PWA — INSTALACIÓN
+       ══════════════════════════════════════ -->
+  <div id="install-banner"
+       class="hidden fixed bottom-0 inset-x-0 p-4 z-50 safe-area-bottom">
+    <div class="glass rounded-3xl p-4 max-w-lg mx-auto flex items-center gap-3 shadow-2xl"
+         style="border:1px solid rgba(255,255,255,.14)">
+
+      <!-- Ícono -->
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"
+           style="background:linear-gradient(135deg,#C9A84C,#8B1A0A)">
+        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+      </div>
+
+      <!-- Texto -->
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-sm leading-tight">Instalá la app</p>
+        <p class="text-[11px] text-white/45 mt-0.5">Accedé sin internet desde tu pantalla de inicio</p>
+      </div>
+
+      <!-- Acciones -->
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <button id="btn-instalar"
+                class="text-xs font-bold px-4 py-2 rounded-xl touch-feedback transition-smooth"
+                style="background:#C9A84C;color:#0F2B1A">
+          Instalar
+        </button>
+        <button id="btn-cerrar-banner"
+                class="text-white/30 text-lg leading-none px-1 touch-feedback">
+          ✕
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       SCRIPTS
+       ══════════════════════════════════════ -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

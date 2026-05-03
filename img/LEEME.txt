@@ -1,0 +1,24 @@
+CARPETA DE ÍCONOS PWA — Horarios Andresito
+==========================================
+
+Colocá aquí los siguientes archivos de ícono para completar la PWA:
+
+  icon-192.png   → 192×192 px  (ícono estándar Android / Chrome)
+  icon-512.png   → 512×512 px  (ícono splash screen / Play Store)
+
+DISEÑO SUGERIDO
+---------------
+  - Fondo: degradado #C9A84C → #8B1A0A (dorado tierra a rojo misionero)
+  - Símbolo: silueta de un colectivo blanca centrada
+  - Bordes: redondeados (para ícono maskable)
+
+HERRAMIENTAS GRATUITAS PARA CREAR LOS ÍCONOS
+---------------------------------------------
+  • Favicon.io          → https://favicon.io/favicon-generator/
+  • PWA Asset Generator → https://progressier.com/pwa-icons-and-ios-splash-screen-generator
+  • Canva               → Crear diseño 512×512 y exportar en ambos tamaños
+
+NOTA
+----
+Sin estos archivos la PWA funciona igual en el navegador,
+pero mostrará un ícono genérico al instalarla como app de pantalla de inicio.
