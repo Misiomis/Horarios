@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   inicializarDia();
   inicializarFiltros();
   inicializarBuscadorOD();
+  inicializarComentarios();
+  inicializarCompartir();
   registrarServiceWorker();
   inicializarPWA();
   detectarEstadoRed();
@@ -81,9 +83,9 @@ function inicializarDia() {
   }
 
   const conf = {
-    lv:      { texto: 'Lunes a Viernes',                   icono: '💼', clase: 'text-emerald-400', desc: 'Horario completo' },
-    sabado:  { texto: 'Sábado',                            icono: '🌤️', clase: 'text-amber-400',  desc: 'Horario reducido' },
-    domingo: { texto: esFeriado ? 'Feriado' : 'Domingo',   icono: esFeriado ? '🎌' : '☀️', clase: 'text-orange-400', desc: 'Horario especial' }
+    lv:      { texto: 'Lunes a Viernes',                 icono: '💼', clase: 'text-emerald-700', desc: 'Horario completo' },
+    sabado:  { texto: 'Sábado',                          icono: '🌤️', clase: 'text-amber-600',  desc: 'Horario reducido' },
+    domingo: { texto: esFeriado ? 'Feriado' : 'Domingo', icono: esFeriado ? '🎌' : '☀️', clase: 'text-orange-600', desc: 'Horario especial' }
   }[estado.tipoDia];
 
   const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -361,26 +363,26 @@ function renderizarProximoServicio() {
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2 flex-wrap mb-3">
           <span class="text-sm font-semibold" style="color:${empresa.color}">${empresa.icono} ${empresa.nombre}</span>
-          ${s.numero ? `<span class="text-xs px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}22;color:${empresa.color};border:1px solid ${empresa.color}44">N° ${s.numero}</span>` : ''}
-          ${s.servicio ? `<span class="text-xs px-2 py-0.5 rounded-full" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1)">${s.servicio}</span>` : ''}
-          <span class="badge-proximo text-xs px-3 py-1 rounded-full font-bold border" style="background:rgba(232,70,37,.20);color:#FF7050;border-color:rgba(232,70,37,.45)">⚡ ${tiempoRestante}</span>
+          ${s.numero ? `<span class="text-xs px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}18;color:${empresa.color};border:1px solid ${empresa.color}40">N° ${s.numero}</span>` : ''}
+          ${s.servicio ? `<span class="text-xs px-2 py-0.5 rounded-full" style="background:#F1F5F9;color:#5A6480;border:1px solid #E2E8F4">${s.servicio}</span>` : ''}
+          <span class="badge-proximo text-xs px-3 py-1 rounded-full font-bold" style="background:rgba(232,70,37,.12);color:#E84625;border:1px solid rgba(232,70,37,.30)">⚡ ${tiempoRestante}</span>
         </div>
         <div class="flex items-center gap-3 mb-1">
-          <span class="text-5xl font-black tracking-tight leading-none">${proximoItem.hora}</span>
+          <span class="text-5xl font-black tracking-tight leading-none" style="color:var(--text,#1A2140)">${proximoItem.hora}</span>
           <div class="min-w-0">
-            <p class="font-bold text-lg leading-tight truncate">${s.destino}</p>
-            ${s.llegada ? `<p class="text-xs text-white/50 mt-0.5">→ llega ${s.llegada}${durStr ? ' · ' + durStr : ''}</p>` : ''}
-            ${s.categoria !== 'Servicio regular' ? `<p class="text-xs mt-0.5" style="color:${empresa.color}aa">${s.categoria}</p>` : ''}
+            <p class="font-bold text-lg leading-tight truncate" style="color:var(--text,#1A2140)">${s.destino}</p>
+            ${s.llegada ? `<p class="text-xs mt-0.5" style="color:#5A6480">→ llega ${s.llegada}${durStr ? ' · ' + durStr : ''}</p>` : ''}
+            ${s.categoria !== 'Servicio regular' ? `<p class="text-xs mt-0.5" style="color:${empresa.color}">${s.categoria}</p>` : ''}
           </div>
         </div>
-        ${paradasStr ? `<p class="text-xs text-white/35 mt-2 flex items-center gap-1.5"><svg class="w-3 h-3 flex-shrink-0 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>${paradasStr}</p>` : ''}
+        ${paradasStr ? `<p class="text-xs mt-2 flex items-center gap-1.5" style="color:#9CA3BF"><svg class="w-3 h-3 flex-shrink-0" style="color:#C4CADB" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>${paradasStr}</p>` : ''}
       </div>
       <div class="flex-shrink-0 flex flex-col items-end gap-2">
         <div class="flex items-center gap-1.5">
           <span class="pulse-dot w-2 h-2 rounded-full inline-block" style="background:#E84625"></span>
-          <span class="text-xs text-white/35">En vivo</span>
+          <span class="text-xs" style="color:#9CA3BF">En vivo</span>
         </div>
-        ${!s.dias.includes('domingo') ? `<span class="text-[10px] text-amber-400/60 text-right">No opera<br>domingos</span>` : ''}
+        ${!s.dias.includes('domingo') ? `<span class="text-[10px] text-right" style="color:#D97706">No opera<br>domingos</span>` : ''}
       </div>
     </div>`;
 }
@@ -486,41 +488,41 @@ function crearTarjeta(servicio, hora, index) {
   else if (duracion) subtitulo = duracion;
 
   const div = document.createElement('div');
-  div.className = `glass rounded-3xl p-4 card-enter touch-feedback transition-smooth ${esPasado ? 'opacity-40' : ''}`;
+  div.className = `card p-4 card-enter touch-feedback transition-smooth${esPasado ? ' opacity-40' : ''}`;
   div.style.animationDelay = `${Math.min(index * 45, 600)}ms`;
 
   div.innerHTML = `
     <div class="flex items-center justify-between gap-2 mb-3">
       <span class="text-sm font-semibold" style="color:${empresa.color}">${empresa.icono} ${empresa.nombre}</span>
       <div class="flex items-center gap-1.5 flex-wrap justify-end">
-        ${servicio.numero ? `<span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}22;color:${empresa.color};border:1px solid ${empresa.color}44">N° ${servicio.numero}</span>` : ''}
-        ${servicio.servicio ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1)">${servicio.servicio}</span>` : ''}
-        ${esLlegada ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:rgba(56,189,248,.15);color:#38BDF8;border:1px solid rgba(56,189,248,.3)">🏠 Llega a Andresito</span>` : ''}
-        ${esArea    ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.08)">🗺️ Ruta de área</span>` : ''}
+        ${servicio.numero ? `<span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}14;color:${empresa.color};border:1px solid ${empresa.color}38">N° ${servicio.numero}</span>` : ''}
+        ${servicio.servicio ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:#F1F5F9;color:#5A6480;border:1px solid #E2E8F4">${servicio.servicio}</span>` : ''}
+        ${esLlegada ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE">🏠 Llega a Andresito</span>` : ''}
+        ${esArea    ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:#F8FAFF;color:#9CA3BF;border:1px solid #E2E8F4">🗺️ Ruta de área</span>` : ''}
       </div>
     </div>
 
     <div class="flex items-center gap-3">
       <div class="flex-shrink-0 min-w-[64px]">
-        <span class="text-3xl font-black leading-none ${esPasado ? 'text-white/25' : 'text-white'}">${hora}</span>
-        ${!esLlegada && servicio.llegada ? `<p class="text-[11px] text-white/35 mt-1 font-mono">→ ${servicio.llegada}</p>` : ''}
-        ${esLlegada  ? `<p class="text-[11px] text-white/35 mt-1">sale ${servicio.salida}</p>` : ''}
+        <span class="text-3xl font-black leading-none" style="color:${esPasado ? '#C4CADB' : '#1A2140'}">${hora}</span>
+        ${!esLlegada && servicio.llegada ? `<p class="text-[11px] mt-1 font-mono" style="color:#9CA3BF">→ ${servicio.llegada}</p>` : ''}
+        ${esLlegada  ? `<p class="text-[11px] mt-1" style="color:#9CA3BF">sale ${servicio.salida}</p>` : ''}
       </div>
-      <div class="w-px h-10 rounded-full flex-shrink-0" style="background:${empresa.color}44"></div>
+      <div class="w-px h-10 rounded-full flex-shrink-0" style="background:${empresa.color}50"></div>
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2 flex-wrap">
-          <p class="font-bold ${esPasado ? 'text-white/30' : 'text-white'}">${esLlegada ? servicio.origen : servicio.destino}</p>
+          <p class="font-bold" style="color:${esPasado ? '#C4CADB' : '#1A2140'}">${esLlegada ? servicio.origen : servicio.destino}</p>
           ${badgeEstado}
         </div>
-        ${subtitulo ? `<p class="text-xs text-white/40 mt-0.5 leading-tight">${subtitulo}</p>` : ''}
-        ${servicio.categoria !== 'Servicio regular' ? `<p class="text-[11px] mt-0.5" style="color:${empresa.color}99">${servicio.categoria}</p>` : ''}
+        ${subtitulo ? `<p class="text-xs mt-0.5 leading-tight" style="color:#5A6480">${subtitulo}</p>` : ''}
+        ${servicio.categoria !== 'Servicio regular' ? `<p class="text-[11px] mt-0.5 font-semibold" style="color:${empresa.color}">${servicio.categoria}</p>` : ''}
       </div>
     </div>
 
     ${paradasText ? `
-      <div class="mt-3 pt-3 border-t border-white/[0.06]">
-        <p class="text-[11px] text-white/30 flex items-start gap-1.5 leading-relaxed">
-          <svg class="w-3 h-3 mt-0.5 flex-shrink-0 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="mt-3 pt-3" style="border-top:1px solid #E2E8F4">
+        <p class="text-[11px] flex items-start gap-1.5 leading-relaxed" style="color:#9CA3BF">
+          <svg class="w-3 h-3 mt-0.5 flex-shrink-0" style="color:#C4CADB" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
           </svg>
           <span>${paradasText}</span>
@@ -528,8 +530,8 @@ function crearTarjeta(servicio, hora, index) {
       </div>` : ''}
 
     ${noDomingo ? `
-      <div class="mt-2 pt-2 border-t" style="border-color:rgba(252,211,77,.1)">
-        <p class="text-[11px] flex items-center gap-1.5" style="color:rgba(252,211,77,.7)">
+      <div class="mt-2 pt-2" style="border-top:1px solid #FEF3C7">
+        <p class="text-[11px] flex items-center gap-1.5" style="color:#D97706">
           <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
           </svg>
@@ -538,8 +540,8 @@ function crearTarjeta(servicio, hora, index) {
       </div>` : ''}
 
     ${servicio.notas ? `
-      <div class="mt-2 pt-2 border-t border-white/[0.05]">
-        <p class="text-[11px] flex items-center gap-1.5" style="color:rgba(232,70,37,.75)">
+      <div class="mt-2 pt-2" style="border-top:1px solid #FEE2E2">
+        <p class="text-[11px] flex items-center gap-1.5" style="color:#E84625">
           <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
@@ -581,59 +583,53 @@ function crearTarjetaOD(resultado, index) {
   const intermediate = tramo.slice(1, -1);
 
   const div = document.createElement('div');
-  div.className = `glass rounded-3xl p-4 card-enter touch-feedback transition-smooth ${esPasado ? 'opacity-40' : ''}`;
+  div.className = `card p-4 card-enter touch-feedback transition-smooth${esPasado ? ' opacity-40' : ''}`;
   div.style.animationDelay = `${Math.min(index * 45, 600)}ms`;
 
   div.innerHTML = `
-    <!-- Empresa + badges -->
     <div class="flex items-center justify-between gap-2 mb-4">
       <span class="text-sm font-semibold" style="color:${empresa.color}">${empresa.icono} ${empresa.nombre}</span>
       <div class="flex gap-1.5 flex-wrap justify-end">
-        ${s.numero  ? `<span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}22;color:${empresa.color};border:1px solid ${empresa.color}44">N° ${s.numero}</span>` : ''}
-        ${s.servicio ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1)">${s.servicio}</span>` : ''}
-        ${s.categoria !== 'Servicio regular' ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:${empresa.color}15;color:${empresa.color}cc;border:1px solid ${empresa.color}33">${s.categoria}</span>` : ''}
+        ${s.numero   ? `<span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}14;color:${empresa.color};border:1px solid ${empresa.color}38">N° ${s.numero}</span>` : ''}
+        ${s.servicio ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:#F1F5F9;color:#5A6480;border:1px solid #E2E8F4">${s.servicio}</span>` : ''}
+        ${s.categoria !== 'Servicio regular' ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:${empresa.color}12;color:${empresa.color};border:1px solid ${empresa.color}30">${s.categoria}</span>` : ''}
         ${badge}
       </div>
     </div>
 
-    <!-- Visualización del tramo: Hora origen ──── Hora destino -->
     <div class="flex items-end gap-3">
       <div class="text-center flex-shrink-0">
-        <p class="text-3xl font-black leading-none ${esPasado ? 'text-white/25' : 'text-white'}">${(horaOrigen !== '—' ? horaOrigen : s.salida) ?? '—'}</p>
-        <p class="text-[11px] text-white/40 mt-1 max-w-[80px] truncate">${tramo[0]}</p>
+        <p class="text-3xl font-black leading-none" style="color:${esPasado ? '#C4CADB' : '#1A2140'}">${(horaOrigen !== '—' ? horaOrigen : s.salida) ?? '—'}</p>
+        <p class="text-[11px] mt-1 max-w-[80px] truncate" style="color:#9CA3BF">${tramo[0]}</p>
       </div>
-
       <div class="flex-1 flex flex-col items-center gap-0.5 pb-1.5">
-        ${durTramo ? `<span class="text-[10px] text-white/30">${durTramo}</span>` : ''}
+        ${durTramo ? `<span class="text-[10px]" style="color:#9CA3BF">${durTramo}</span>` : ''}
         <div class="w-full flex items-center gap-1">
-          <div class="flex-1 border-t border-dashed" style="border-color:${empresa.color}55"></div>
-          <svg class="w-3 h-3 flex-shrink-0" style="color:${empresa.color}88" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <div class="flex-1 border-t border-dashed" style="border-color:${empresa.color}50"></div>
+          <svg class="w-3 h-3 flex-shrink-0" style="color:${empresa.color}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
           </svg>
         </div>
       </div>
-
       <div class="text-center flex-shrink-0">
-        <p class="text-3xl font-black leading-none ${esPasado ? 'text-white/25' : 'text-white'}">${(horaDestino !== '—' ? horaDestino : s.llegada) ?? '—'}</p>
-        <p class="text-[11px] text-white/40 mt-1 max-w-[80px] truncate">${tramo[tramo.length - 1]}</p>
+        <p class="text-3xl font-black leading-none" style="color:${esPasado ? '#C4CADB' : '#1A2140'}">${(horaDestino !== '—' ? horaDestino : s.llegada) ?? '—'}</p>
+        <p class="text-[11px] mt-1 max-w-[80px] truncate" style="color:#9CA3BF">${tramo[tramo.length - 1]}</p>
       </div>
     </div>
 
-    <!-- Paradas intermedias del tramo -->
     ${intermediate.length > 0 ? `
-      <div class="mt-3 pt-3 border-t border-white/[0.06]">
-        <p class="text-[11px] text-white/30 flex items-start gap-1.5 leading-relaxed">
-          <svg class="w-3 h-3 mt-0.5 flex-shrink-0 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="mt-3 pt-3" style="border-top:1px solid #E2E8F4">
+        <p class="text-[11px] flex items-start gap-1.5 leading-relaxed" style="color:#9CA3BF">
+          <svg class="w-3 h-3 mt-0.5 flex-shrink-0" style="color:#C4CADB" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
           </svg>
           <span>${intermediate.join(' · ')}</span>
         </p>
       </div>` : ''}
 
-    <!-- Aviso días Kruse -->
     ${noDomingo ? `
-      <div class="mt-2 pt-2 border-t" style="border-color:rgba(252,211,77,.1)">
-        <p class="text-[11px] flex items-center gap-1.5" style="color:rgba(252,211,77,.7)">
+      <div class="mt-2 pt-2" style="border-top:1px solid #FEF3C7">
+        <p class="text-[11px] flex items-center gap-1.5" style="color:#D97706">
           <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
           </svg>
@@ -666,8 +662,9 @@ function registrarServiceWorker() {
 
 function mostrarToastActualizacion() {
   const toast = document.createElement('div');
-  toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 z-50 glass rounded-2xl px-5 py-3 text-sm text-white/90 shadow-2xl flex items-center gap-3';
-  toast.innerHTML = `<span>🔄 Hay una nueva versión disponible</span><button onclick="window.location.reload()" class="text-amber-400 font-semibold text-xs underline">Actualizar</button>`;
+  toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 z-50 card rounded-2xl px-5 py-3 text-sm shadow-xl flex items-center gap-3';
+  toast.style.cssText = 'color:#1A2140;white-space:nowrap';
+  toast.innerHTML = `<span>🔄 Hay una nueva versión disponible</span><button onclick="window.location.reload()" style="color:#E84625;font-weight:700;font-size:12px;text-decoration:underline;background:none;border:none;cursor:pointer">Actualizar</button>`;
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 8000);
 }
@@ -706,4 +703,76 @@ function detectarEstadoRed() {
   window.addEventListener('online',  actualizar);
   window.addEventListener('offline', actualizar);
   actualizar();
+}
+
+/* ════════════════════════════════════════════
+   COMENTARIOS Y RECLAMOS
+   ════════════════════════════════════════════ */
+function inicializarComentarios() {
+  const form   = document.getElementById('form-comentario');
+  const errEl  = document.getElementById('form-error');
+  const exitoEl = document.getElementById('form-exito');
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nombre = document.getElementById('comentario-nombre').value.trim();
+    const motivo = document.getElementById('comentario-motivo').value;
+    const texto  = document.getElementById('comentario-texto').value.trim();
+
+    if (!nombre || !motivo || !texto) {
+      errEl.textContent = 'Por favor completá todos los campos obligatorios.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    errEl.classList.add('hidden');
+
+    const comentario = {
+      id:     Date.now(),
+      nombre,
+      motivo,
+      texto,
+      fecha:  new Date().toLocaleString('es-AR'),
+      visto:  false
+    };
+
+    try {
+      const guardados = JSON.parse(localStorage.getItem('andresito_comentarios') || '[]');
+      guardados.push(comentario);
+      localStorage.setItem('andresito_comentarios', JSON.stringify(guardados));
+    } catch (_) {}
+
+    form.classList.add('hidden');
+    exitoEl.classList.remove('hidden');
+
+    setTimeout(() => {
+      form.reset();
+      form.classList.remove('hidden');
+      exitoEl.classList.add('hidden');
+    }, 4500);
+  });
+}
+
+/* ════════════════════════════════════════════
+   COMPARTIR
+   ════════════════════════════════════════════ */
+function inicializarCompartir() {
+  document.getElementById('btn-compartir')?.addEventListener('click', async () => {
+    const data = {
+      title: 'Horarios de Colectivos — Andresito',
+      text:  'Consultá los horarios de colectivos de Cdte. Andresito desde el celular 🚌',
+      url:   window.location.href
+    };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch (_) {}
+    } else {
+      try { await navigator.clipboard.writeText(window.location.href); } catch (_) {}
+      const t = document.createElement('div');
+      t.className = 'card fixed top-20 left-1/2 -translate-x-1/2 z-50 px-5 py-3 text-sm shadow-xl flex items-center gap-2';
+      t.style.cssText = 'color:#1A2140;white-space:nowrap';
+      t.innerHTML = `<span>🔗</span><span>¡Enlace copiado al portapapeles!</span>`;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+  });
 }

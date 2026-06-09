@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Comentarios Andresito Bus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{--accent:#E84625;--navy:#0D1F46;--text:#1A2140;--text-sec:#5A6480;--text-muted:#9CA3BF;--border:#E2E8F4;--card:#fff}
+    body{font-family:'Inter',sans-serif;background:linear-gradient(170deg,#EDF0FF 0%,#F3F6FF 55%,#FFF6F3 100%);min-height:100vh;color:var(--text)}
+    header{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 18px rgba(13,31,70,.28)}
+    header h1{color:white;font-size:16px;font-weight:800}
+    header span{color:rgba(255,255,255,.5);font-size:12px}
+    .wrap{max-width:640px;margin:0 auto;padding:24px 16px}
+    /* Login */
+    #login-section{display:flex;align-items:center;justify-content:center;min-height:70vh}
+    .login-card{background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:0 4px 22px rgba(13,31,70,.12);padding:32px 28px;width:100%;max-width:380px;text-align:center}
+    .login-card h2{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px}
+    .login-card p{font-size:13px;color:var(--text-sec);margin-bottom:24px}
+    .input-clean{background:white;border:1.5px solid var(--border);border-radius:12px;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;width:100%;padding:11px 14px;font-size:14px;font-family:inherit;margin-bottom:12px}
+    .input-clean:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,70,37,.12)}
+    .btn{background:var(--accent);color:white;border:none;border-radius:12px;font-weight:700;font-family:inherit;cursor:pointer;padding:12px;width:100%;font-size:14px;transition:background .2s}
+    .btn:hover{background:#cf3b1c}
+    .err{color:var(--accent);font-size:12px;font-weight:600;margin-top:-6px;margin-bottom:12px;display:none}
+    /* Panel */
+    #panel-section{display:none}
+    .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:gap}
+    .panel-header h2{font-size:18px;font-weight:800;color:var(--text)}
+    .count-badge{background:var(--accent);color:white;border-radius:999px;font-size:12px;font-weight:700;padding:3px 10px}
+    .btn-sm{background:white;border:1.5px solid var(--border);border-radius:10px;color:var(--text-sec);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:7px 14px;transition:border-color .2s}
+    .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+    .btn-danger{background:#FFF1F2;border-color:#FECDD3;color:#DC2626}
+    .btn-danger:hover{background:#FEE2E2;border-color:#DC2626}
+    /* Comentario card */
+    .comment-card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 2px 10px rgba(13,31,70,.08);padding:16px;margin-bottom:12px}
+    .comment-card.nuevo{border-color:rgba(232,70,37,.28);background:linear-gradient(135deg,#FFF4F1,#fff)}
+    .cc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:10px}
+    .cc-nombre{font-size:14px;font-weight:700;color:var(--text)}
+    .cc-fecha{font-size:11px;color:var(--text-muted);flex-shrink:0}
+    .cc-motivo{display:inline-block;background:#FFF0EC;color:var(--accent);border:1px solid rgba(232,70,37,.28);border-radius:999px;font-size:11px;font-weight:700;padding:2px 10px;margin-bottom:8px}
+    .cc-texto{font-size:13px;color:var(--text-sec);line-height:1.55}
+    .cc-actions{display:flex;gap:8px;margin-top:12px}
+    .badge-new{background:var(--accent);color:white;border-radius:999px;font-size:10px;font-weight:700;padding:2px 7px;margin-left:6px}
+    .empty{text-align:center;padding:48px 20px;color:var(--text-muted)}
+    .empty span{font-size:40px;display:block;margin-bottom:10px}
+    .logout-btn{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:13px;font-family:inherit;padding:4px 8px;border-radius:6px;transition:color .2s}
+    .logout-btn:hover{color:white}
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🚌 Admin — Andresito Bus</h1>
+    <button class="logout-btn" id="btn-logout" style="display:none" onclick="logout()">Cerrar sesión</button>
+  </header>
+
+  <!-- LOGIN -->
+  <div id="login-section">
+    <div class="login-card">
+      <h2>Panel de Administración</h2>
+      <p>Ingresá la contraseña para ver los comentarios recibidos.</p>
+      <input type="password" id="pwd-input" class="input-clean" placeholder="Contraseña" onkeydown="if(event.key==='Enter')login()">
+      <p id="pwd-error" class="err">Contraseña incorrecta.</p>
+      <button class="btn" onclick="login()">Ingresar</button>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panel-section" class="wrap">
+    <div class="panel-header">
+      <div style="display:flex;align-items:center;gap:10px">
+        <h2>Comentarios recibidos</h2>
+        <span class="count-badge" id="count-badge">0</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-sm" onclick="marcarTodosVistos()">Marcar como vistos</button>
+        <button class="btn-sm btn-danger" onclick="limpiarTodo()">Limpiar todo</button>
+      </div>
+    </div>
+    <div id="lista-comentarios"></div>
+  </div>
+
+  <script>
+    const PASS = 'andresito2026';
+    const KEY  = 'andresito_comentarios';
+
+    function login() {
+      const val = document.getElementById('pwd-input').value;
+      if (val === PASS) {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('panel-section').style.display = 'block';
+        document.getElementById('btn-logout').style.display = 'block';
+        renderComentarios();
+      } else {
+        document.getElementById('pwd-error').style.display = 'block';
+      }
+    }
+
+    function logout() {
+      document.getElementById('login-section').style.display = 'flex';
+      document.getElementById('panel-section').style.display = 'none';
+      document.getElementById('btn-logout').style.display = 'none';
+      document.getElementById('pwd-input').value = '';
+    }
+
+    function getComentarios() {
+      try { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
+      catch(_) { return []; }
+    }
+
+    function saveComentarios(arr) {
+      localStorage.setItem(KEY, JSON.stringify(arr));
+    }
+
+    function renderComentarios() {
+      const lista = document.getElementById('lista-comentarios');
+      const badge = document.getElementById('count-badge');
+      const comentarios = getComentarios().reverse();
+
+      badge.textContent = comentarios.length;
+
+      if (comentarios.length === 0) {
+        lista.innerHTML = '<div class="empty"><span>💬</span><p>No hay comentarios aún.</p><p style="font-size:12px;margin-top:6px">Los comentarios enviados desde la app aparecerán aquí.</p></div>';
+        return;
+      }
+
+      lista.innerHTML = comentarios.map(c => `
+        <div class="comment-card${!c.visto ? ' nuevo' : ''}" id="cc-${c.id}">
+          <div class="cc-top">
+            <div>
+              <span class="cc-nombre">${esc(c.nombre)}</span>
+              ${!c.visto ? '<span class="badge-new">NUEVO</span>' : ''}
+            </div>
+            <span class="cc-fecha">${esc(c.fecha)}</span>
+          </div>
+          <span class="cc-motivo">${esc(c.motivo)}</span>
+          <p class="cc-texto">${esc(c.texto)}</p>
+          <div class="cc-actions">
+            ${!c.visto ? `<button class="btn-sm" onclick="marcarVisto(${c.id})">Marcar como visto</button>` : '<span style="font-size:11px;color:#9CA3BF">✓ Visto</span>'}
+            <button class="btn-sm btn-danger" onclick="eliminar(${c.id})">Eliminar</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function esc(str) {
+      return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function marcarVisto(id) {
+      const arr = getComentarios().map(c => c.id === id ? {...c, visto:true} : c);
+      saveComentarios(arr);
+      renderComentarios();
+    }
+
+    function marcarTodosVistos() {
+      const arr = getComentarios().map(c => ({...c, visto:true}));
+      saveComentarios(arr);
+      renderComentarios();
+    }
+
+    function eliminar(id) {
+      if (!confirm('¿Eliminar este comentario?')) return;
+      saveComentarios(getComentarios().filter(c => c.id !== id));
+      renderComentarios();
+    }
+
+    function limpiarTodo() {
+      if (!confirm('¿Eliminar TODOS los comentarios? Esta acción no se puede deshacer.')) return;
+      localStorage.removeItem(KEY);
+      renderComentarios();
+    }
+  </script>
+</body>
+</html>
