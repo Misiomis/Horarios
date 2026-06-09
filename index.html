@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Consulta de horarios de colectivos de Comandante Andresito, Misiones.">
-  <meta name="theme-color" content="#0D1F46">
+  <meta name="description" content="Consulta de horarios de colectivos de Comandante Andresito, Misiones. Kruse, Expreso de la Selva, Sol del Norte, Kenya, Piñalito Norte, Itatí.">
+  <meta name="theme-color" content="#111111">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Andresito Bus">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta property="og:title" content="Horarios de Colectivo — Andresito">
-  <meta property="og:description" content="Consultá en tiempo real los horarios de colectivos desde Comandante Andresito.">
+  <meta property="og:title" content="Horarios de Colectivos — Andresito">
+  <meta property="og:description" content="Consultá en tiempo real los horarios de colectivos desde Comandante Andresito, Misiones.">
   <meta property="og:type" content="website">
+  <meta name="color-scheme" content="light">
 
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="img/icon-192.png">
@@ -21,218 +22,73 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: { extend: { fontFamily: { sans: ['Inter','ui-sans-serif','system-ui','sans-serif'] } } }
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] }
+        }
+      }
     }
   </script>
 
-  <style>
-    :root {
-      --accent:     #E84625;
-      --accent-lt:  #FFF0EC;
-      --navy:       #0D1F46;
-      --text:       #1A2140;
-      --text-sec:   #5A6480;
-      --text-muted: #9CA3BF;
-      --bg:         #F2F5FF;
-      --card:       #FFFFFF;
-      --border:     #E2E8F4;
-      --shadow:     0 2px 10px rgba(13,31,70,.08);
-      --shadow-md:  0 4px 22px rgba(13,31,70,.12);
-      --r:          20px;
-      --r-sm:       12px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      background: linear-gradient(170deg, #EDF0FF 0%, #F3F6FF 55%, #FFF6F3 100%);
-      background-attachment: fixed;
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* ── Header navy ── */
-    .site-header {
-      background: var(--navy);
-      box-shadow: 0 3px 18px rgba(13,31,70,.28);
-    }
-
-    /* ── Cards ── */
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-    }
-    .card-next {
-      background: linear-gradient(135deg,#FFF4F1 0%,#FFF9F7 100%);
-      border: 1.5px solid rgba(232,70,37,.22);
-      border-radius: var(--r);
-      box-shadow: 0 6px 26px rgba(232,70,37,.12);
-    }
-
-    /* ── Filter pills ── */
-    .filter-pill {
-      background: white;
-      border: 1.5px solid var(--border);
-      color: var(--text-sec);
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all .2s ease;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .filter-pill:hover  { border-color: var(--accent); color: var(--accent); }
-    .filter-pill.active { background: var(--accent); border-color: var(--accent); color: white; box-shadow: 0 2px 10px rgba(232,70,37,.28); }
-    .filter-pill:active { transform: scale(.95); }
-
-    /* ── Select ── */
-    .select-clean {
-      background: white;
-      border: 1.5px solid var(--border);
-      border-radius: var(--r-sm);
-      color: var(--text);
-      outline: none;
-      appearance: none;
-      -webkit-appearance: none;
-      cursor: pointer;
-      transition: border-color .2s, box-shadow .2s;
-      font-size: 14px;
-      width: 100%;
-    }
-    .select-clean:hover  { border-color: #b0bcdc; }
-    .select-clean:focus  { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,70,37,.12); }
-    .select-clean option { background: white; color: var(--text); }
-
-    /* ── Inputs / Textarea ── */
-    .input-clean {
-      background: white;
-      border: 1.5px solid var(--border);
-      border-radius: var(--r-sm);
-      color: var(--text);
-      outline: none;
-      transition: border-color .2s, box-shadow .2s;
-      width: 100%;
-      padding: 10px 14px;
-      font-size: 14px;
-      font-family: inherit;
-    }
-    .input-clean:focus  { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,70,37,.12); }
-    .input-clean::placeholder { color: var(--text-muted); }
-    textarea.input-clean { resize: vertical; min-height: 82px; }
-
-    /* ── Botón primario ── */
-    .btn-primary {
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: var(--r-sm);
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background .2s, transform .15s, box-shadow .2s;
-    }
-    .btn-primary:hover  { background: #cf3b1c; box-shadow: 0 4px 14px rgba(232,70,37,.35); }
-    .btn-primary:active { transform: scale(.97); }
-
-    /* ── Skeletons ── */
-    .skeleton {
-      background: linear-gradient(90deg,#EDF0FF 25%,#E4E9F8 50%,#EDF0FF 75%);
-      background-size: 200% 100%;
-      border-radius: var(--r);
-      animation: shimmer 1.8s ease infinite;
-    }
-    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-
-    /* ── Animación de tarjetas ── */
-    .card-enter { animation: cardIn .4s cubic-bezier(.2,.8,.2,1) both; }
-    @keyframes cardIn {
-      from { opacity:0; transform:translateY(14px) scale(.98); }
-      to   { opacity:1; transform:translateY(0) scale(1); }
-    }
-
-    /* ── Pulse dot próximo ── */
-    .pulse-dot { animation: pulseDot 2s ease-in-out infinite; }
-    @keyframes pulseDot {
-      0%,100%{ box-shadow:0 0 0 0 rgba(232,70,37,.6); }
-      50%    { box-shadow:0 0 0 6px rgba(232,70,37,0); }
-    }
-    .badge-proximo { animation: badgePulse 2.8s ease infinite; }
-    @keyframes badgePulse {
-      0%,100%{ box-shadow:0 0 0 0 rgba(232,70,37,.35); }
-      50%    { box-shadow:0 0 0 6px rgba(232,70,37,0); }
-    }
-
-    /* ── Touch feedback ── */
-    .touch-feedback { transition: transform .15s ease, box-shadow .15s ease; }
-    .touch-feedback:active { transform: scale(.97); }
-    @media (hover:hover) { .touch-feedback:hover { box-shadow: 0 8px 28px rgba(13,31,70,.14); } }
-
-    .transition-smooth { transition: all .25s cubic-bezier(.4,0,.2,1); }
-
-    /* ── Banner PWA ── */
-    #install-banner { animation: slideUp .5s cubic-bezier(.2,.8,.2,1) both; }
-    @keyframes slideUp { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
-
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar       { width:4px; height:4px; }
-    ::-webkit-scrollbar-track { background:transparent; }
-    ::-webkit-scrollbar-thumb { background:rgba(13,31,70,.15); border-radius:10px; }
-    .noscroll                     { scrollbar-width:none; -ms-overflow-style:none; }
-    .noscroll::-webkit-scrollbar  { display:none; }
-
-    /* ── Divider ── */
-    .sep { border:none; border-top:1px solid var(--border); }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="font-sans antialiased select-none">
+<body class="font-sans antialiased" style="background:var(--bg)">
 
   <!-- ══ HEADER ══ -->
-  <header class="site-header sticky top-0 z-50 px-4 py-3">
-    <div class="max-w-lg mx-auto flex items-center justify-between">
+  <header class="site-header px-4 py-3">
+    <div class="max-w-lg mx-auto flex items-center justify-between gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl flex items-center justify-center shadow-md flex-shrink-0"
-             style="background:linear-gradient(135deg,#E84625,#0D1F46)">
-          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M8 7h8M8 11h8M5 17H3v-1a2 2 0 012-2h14a2 2 0 012 2v1h-2M5 17v2h14v-2M5 17H3M19 17h2M7 17a1 1 0 100 2 1 1 0 000-2zm10 0a1 1 0 100 2 1 1 0 000-2zM5 4h14a2 2 0 012 2v7H3V6a2 2 0 012-2z"/>
+        <!-- Bus logo in coral-orange gradient square -->
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+             style="background:linear-gradient(135deg,#FF4C1A 0%,#FF7240 100%);box-shadow:0 2px 8px rgba(255,76,26,.40)">
+          <svg viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:20px">
+            <rect x="1" y="6" width="34" height="16" rx="4" fill="white"/>
+            <rect x="4" y="3" width="28" height="5" rx="2" fill="white" opacity=".6"/>
+            <rect x="3" y="8" width="7" height="6" rx="1.5" fill="#FF4C1A" opacity=".35"/>
+            <rect x="12" y="8" width="5" height="6" rx="1.5" fill="#FF4C1A" opacity=".35"/>
+            <rect x="19" y="8" width="5" height="6" rx="1.5" fill="#FF4C1A" opacity=".35"/>
+            <rect x="26" y="8" width="7" height="6" rx="1.5" fill="#FF4C1A" opacity=".35"/>
+            <rect x="13" y="15" width="5" height="7" rx="1" fill="#FF4C1A" opacity=".25"/>
+            <circle cx="8" cy="25" r="3.5" fill="white"/><circle cx="8" cy="25" r="1.8" fill="#FF4C1A" opacity=".4"/>
+            <circle cx="28" cy="25" r="3.5" fill="white"/><circle cx="28" cy="25" r="1.8" fill="#FF4C1A" opacity=".4"/>
+            <circle cx="2.5" cy="14" r="1.5" fill="#FF4C1A" opacity=".7"/>
           </svg>
         </div>
         <div>
-          <h1 class="text-base font-bold leading-tight text-white">Andresito Bus</h1>
-          <p class="text-[11px] leading-tight" style="color:rgba(255,255,255,.5)">Cdte. Andresito · Misiones</p>
+          <h1 class="app-title leading-tight" style="font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;color:white">Andresito Bus</h1>
+          <p class="app-subtitle" style="font-size:11px;color:rgba(255,255,255,.45)">Cdte. Andresito · Misiones</p>
         </div>
       </div>
-      <div class="text-right">
-        <p id="reloj"       class="text-2xl font-black tracking-tight leading-none text-white">--:--</p>
-        <p id="reloj-fecha" class="text-[11px] mt-0.5 capitalize" style="color:rgba(255,255,255,.45)"></p>
+      <div class="text-right flex-shrink-0">
+        <p id="reloj" class="text-2xl font-black tracking-tight leading-none text-white" style="font-family:'Outfit',sans-serif">--:--</p>
+        <p id="reloj-fecha" class="text-[11px] mt-0.5 capitalize" style="color:rgba(255,255,255,.42)"></p>
       </div>
     </div>
   </header>
+
+  <!-- ══ AVISO BANNER ══ -->
+  <div id="aviso-banner" class="hidden"></div>
 
 
   <!-- ══ MAIN ══ -->
   <main class="max-w-lg mx-auto px-4 pt-5 pb-32 space-y-4">
 
     <!-- Banner del día -->
-    <section class="card p-5">
+    <section id="banner-dia" class="card p-5">
       <div class="flex items-center justify-between gap-4">
         <div class="flex-1 min-w-0">
-          <p class="text-[10px] font-semibold uppercase tracking-widest mb-1" style="color:var(--text-muted)">
+          <p class="text-[10px] font-semibold uppercase tracking-widest mb-1" style="color:var(--text-3)">
             Horarios vigentes hoy
           </p>
-          <h2 id="tipo-dia-texto" class="text-2xl font-black leading-tight" style="color:var(--text)">Cargando…</h2>
-          <p id="tipo-dia-desc"   class="text-xs mt-0.5" style="color:var(--text-sec)"></p>
-          <p id="fecha-completa"  class="text-xs mt-1 capitalize" style="color:var(--text-muted)"></p>
+          <h2 id="tipo-dia-texto" class="text-2xl font-black leading-tight" style="font-family:'Outfit',sans-serif;color:var(--text)">Cargando…</h2>
+          <p id="tipo-dia-desc"  class="text-xs mt-0.5" style="color:var(--text-2)"></p>
+          <p id="fecha-completa" class="text-xs mt-1 capitalize" style="color:var(--text-3)"></p>
         </div>
         <div id="icono-dia" class="text-4xl flex-shrink-0">🗓️</div>
       </div>
@@ -241,7 +97,7 @@
 
     <!-- Próximo servicio -->
     <section id="seccion-proximo" class="hidden">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-1" style="color:var(--text-muted)">
+      <p class="text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-1" style="color:var(--text-3)">
         ⚡ Próximo en partir
       </p>
       <div id="proximo-card" class="card-next p-5 touch-feedback transition-smooth cursor-pointer"></div>
@@ -252,72 +108,65 @@
     <section class="card p-5">
       <div class="flex items-center justify-between mb-4">
         <div>
-          <p class="text-[10px] font-semibold uppercase tracking-widest mb-0.5" style="color:var(--text-muted)">
+          <p class="text-[10px] font-semibold uppercase tracking-widest mb-0.5" style="color:var(--text-3)">
             Buscador de rutas
           </p>
-          <p class="text-sm font-semibold" style="color:var(--text-sec)">¿A dónde vas?</p>
+          <p class="text-sm font-semibold" style="color:var(--text-2)">¿A dónde vas?</p>
         </div>
-        <div id="od-badge" class="hidden flex items-center gap-1.5 rounded-full px-3 py-1.5"
-             style="background:var(--accent-lt);border:1px solid rgba(232,70,37,.28)">
+        <div id="od-badge" class="hidden items-center gap-1.5 rounded-full px-3 py-1.5"
+             style="background:var(--accent-lt);border:1px solid rgba(255,76,26,.25)">
           <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:var(--accent)"></span>
           <span id="od-badge-texto" class="text-[11px] font-semibold" style="color:var(--accent)"></span>
         </div>
       </div>
 
       <div class="flex flex-col gap-3">
-        <!-- Origen -->
-        <div class="relative">
-          <label class="text-[10px] font-semibold uppercase tracking-widest block mb-1.5 px-1" style="color:var(--text-muted)">Origen</label>
-          <select id="select-origen" class="select-clean px-4 py-3 pr-10">
-            <option value="">Seleccionar origen…</option>
-          </select>
-          <div class="pointer-events-none absolute right-3.5 bottom-3.5">
-            <svg class="w-4 h-4" style="color:var(--text-muted)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-            </svg>
-          </div>
+        <!-- Origen custom dropdown -->
+        <div>
+          <label class="text-[10px] font-semibold uppercase tracking-widest block mb-1.5 px-1" style="color:var(--text-3)">Origen</label>
+          <div id="select-origen" class="csd"></div>
         </div>
 
         <!-- Swap -->
         <div class="flex items-center gap-3">
           <div class="flex-1 h-px" style="background:var(--border)"></div>
           <button id="btn-swap-od"
-                  class="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0 touch-feedback transition-smooth"
+                  class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 touch-feedback transition-smooth"
                   style="background:white;border:1.5px solid var(--border)"
                   aria-label="Intercambiar origen y destino">
-            <svg class="w-4 h-4" style="color:var(--text-sec)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <svg class="w-4 h-4" style="color:var(--text-2)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
             </svg>
           </button>
           <div class="flex-1 h-px" style="background:var(--border)"></div>
         </div>
 
-        <!-- Destino -->
-        <div class="relative">
-          <label class="text-[10px] font-semibold uppercase tracking-widest block mb-1.5 px-1" style="color:var(--text-muted)">Destino</label>
-          <select id="select-destino" class="select-clean px-4 py-3 pr-10">
-            <option value="">Seleccionar destino…</option>
-          </select>
-          <div class="pointer-events-none absolute right-3.5 bottom-3.5">
-            <svg class="w-4 h-4" style="color:var(--text-muted)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-            </svg>
-          </div>
+        <!-- Destino custom dropdown -->
+        <div>
+          <label class="text-[10px] font-semibold uppercase tracking-widest block mb-1.5 px-1" style="color:var(--text-3)">Destino</label>
+          <div id="select-destino" class="csd"></div>
         </div>
 
         <!-- Limpiar -->
         <button id="btn-limpiar-od"
                 class="hidden w-full py-2.5 rounded-xl text-xs font-semibold touch-feedback transition-smooth"
-                style="background:#F8F9FB;border:1.5px solid var(--border);color:var(--text-sec);font-family:inherit;cursor:pointer">
+                style="background:#F9F8F6;border:1.5px solid var(--border);color:var(--text-2);font-family:inherit;cursor:pointer">
           ✕ &nbsp;Limpiar búsqueda
         </button>
+
+        <!-- Badge O/D activo -->
+        <div id="od-badge-inline" class="hidden items-center gap-2 rounded-xl px-3 py-2"
+             style="background:var(--accent-lt);border:1px solid rgba(255,76,26,.22)">
+          <span class="text-[11px] font-semibold" style="color:var(--accent)">Mostrando ruta:</span>
+          <span id="od-badge-ruta" class="text-[11px]" style="color:var(--text-2)"></span>
+        </div>
       </div>
     </section>
 
 
     <!-- Filtros destino -->
     <section id="seccion-filtros-destino">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-1" style="color:var(--text-muted)">
+      <p class="text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-1" style="color:var(--text-3)">
         Filtrar por destino
       </p>
       <div id="filtros-destino" class="flex gap-2 overflow-x-auto noscroll pb-0.5 px-0.5"></div>
@@ -326,7 +175,7 @@
 
     <!-- Filtros empresa -->
     <section id="seccion-filtros-empresa">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-1" style="color:var(--text-muted)">
+      <p class="text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-1" style="color:var(--text-3)">
         Empresa
       </p>
       <div id="filtros-empresa" class="flex gap-2 overflow-x-auto noscroll pb-0.5 px-0.5"></div>
@@ -336,10 +185,10 @@
     <!-- Listado de horarios -->
     <section>
       <div class="flex items-center justify-between mb-2.5 px-1">
-        <p class="text-[10px] font-semibold uppercase tracking-widest" style="color:var(--text-muted)">
+        <p class="text-[10px] font-semibold uppercase tracking-widest" style="color:var(--text-3)">
           Horarios del día
         </p>
-        <span id="contador-resultados" class="text-[11px]" style="color:var(--text-muted)">—</span>
+        <span id="contador-resultados" class="text-[11px]" style="color:var(--text-3)">—</span>
       </div>
 
       <div id="skeletons" class="space-y-3">
@@ -355,7 +204,7 @@
         <div class="card p-10 text-center">
           <div class="text-5xl mb-4">🚌</div>
           <p class="font-semibold" style="color:var(--text)">No hay servicios disponibles</p>
-          <p id="vacio-mensaje" class="text-sm mt-2" style="color:var(--text-sec)">Probá con otro filtro o destino</p>
+          <p id="vacio-mensaje" class="text-sm mt-2" style="color:var(--text-2)">Probá con otro filtro o destino</p>
         </div>
       </div>
     </section>
@@ -373,43 +222,50 @@
         </div>
         <div>
           <p class="text-xs font-semibold" style="color:#065F46">Modo sin conexión activo</p>
-          <p class="text-[11px]" style="color:var(--text-sec)">Mostrando datos desde caché local</p>
+          <p class="text-[11px]" style="color:var(--text-2)">Mostrando datos desde caché local</p>
         </div>
       </div>
     </div>
 
 
-    <!-- Empresas operadoras -->
+    <!-- Empresas operadoras — left-border legend style -->
     <section class="card p-5">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-4" style="color:var(--text-muted)">
+      <p class="text-[10px] font-semibold uppercase tracking-widest mb-4" style="color:var(--text-3)">
         Empresas operadoras
       </p>
-      <div class="grid grid-cols-2 gap-3">
-        <div class="rounded-2xl p-3" style="background:#F5F3FF;border:1px solid rgba(124,58,237,.18)">
-          <p class="text-sm font-bold" style="color:#7C3AED">🟣 Kruse</p>
-          <p class="text-[11px] mt-0.5" style="color:var(--text-sec)">Larga distancia · cama</p>
-          <p class="text-[10px] mt-1" style="color:#D97706">⚠️ L–S (no domingos)</p>
+      <div class="flex flex-col gap-2.5">
+
+        <div class="empresa-legend-item kruse rounded-xl p-3">
+          <p class="empresa-nombre" style="color:#7C3AED">🟣 Kruse</p>
+          <p class="empresa-desc">Larga distancia · cama y semicama</p>
+          <p class="empresa-nota">⚠️ Lunes a sábado (no domingos)</p>
         </div>
-        <div class="rounded-2xl p-3" style="background:#F0F9FF;border:1px solid rgba(2,132,199,.18)">
-          <p class="text-sm font-bold" style="color:#0284C7">🔵 Expreso de la Selva</p>
-          <p class="text-[11px] mt-0.5" style="color:var(--text-sec)">Regional · larga dist.</p>
+
+        <div class="empresa-legend-item expresoselva rounded-xl p-3">
+          <p class="empresa-nombre" style="color:#0284C7">🔵 Expreso de la Selva</p>
+          <p class="empresa-desc">Regional · larga distancia · todos los días</p>
         </div>
-        <div class="rounded-2xl p-3" style="background:#FFFBEB;border:1px solid rgba(217,119,6,.18)">
-          <p class="text-sm font-bold" style="color:#D97706">🟡 Sol del Norte</p>
-          <p class="text-[11px] mt-0.5" style="color:var(--text-sec)">Interurbano · todos los días</p>
+
+        <div class="empresa-legend-item soldelnorte rounded-xl p-3">
+          <p class="empresa-nombre" style="color:#D97706">🟡 Sol del Norte</p>
+          <p class="empresa-desc">Interurbano · todos los días</p>
         </div>
-        <div class="rounded-2xl p-3" style="background:#FFF1F2;border:1px solid rgba(220,38,38,.18)">
-          <p class="text-sm font-bold" style="color:#DC2626">🔴 Kenya</p>
-          <p class="text-[11px] mt-0.5" style="color:var(--text-sec)">Interurbano · L–V</p>
+
+        <div class="empresa-legend-item kenia rounded-xl p-3">
+          <p class="empresa-nombre" style="color:#DC2626">🔴 Kenya</p>
+          <p class="empresa-desc">Interurbano · lunes a viernes</p>
         </div>
-        <div class="rounded-2xl p-3 col-span-2" style="background:#F0FDF4;border:1px solid rgba(5,150,105,.18)">
-          <p class="text-sm font-bold" style="color:#059669">🟢 Empresa Piñalito Norte</p>
-          <p class="text-[11px] mt-0.5" style="color:var(--text-sec)">Interurbano local · regional</p>
+
+        <div class="empresa-legend-item pinalito rounded-xl p-3">
+          <p class="empresa-nombre" style="color:#059669">🟢 Empresa Piñalito Norte</p>
+          <p class="empresa-desc">Interurbano local · regional</p>
         </div>
-        <div class="rounded-2xl p-3 col-span-2" style="background:#FFF7ED;border:1px solid rgba(234,88,12,.18)">
-          <p class="text-sm font-bold" style="color:#EA580C">🟠 Empresa Itatí</p>
-          <p class="text-[11px] mt-0.5" style="color:var(--text-sec)">Ruta 24 · San Pedro · San Vicente</p>
+
+        <div class="empresa-legend-item itati rounded-xl p-3">
+          <p class="empresa-nombre" style="color:#EA580C">🟠 Empresa Itatí</p>
+          <p class="empresa-desc">Ruta 24 · San Pedro · San Vicente · Integración</p>
         </div>
+
       </div>
     </section>
 
@@ -425,10 +281,10 @@
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <p class="text-sm font-bold" style="color:var(--text)">¿Conocés a alguien de Andresito?</p>
-          <p class="text-xs mt-0.5" style="color:var(--text-sec)">Compartí la app y ayudanos a llegar a más vecinos 🙌</p>
+          <p class="text-sm font-bold" style="color:var(--text)">¿Conocés vecinos de Andresito?</p>
+          <p class="text-xs mt-0.5" style="color:var(--text-2)">Compartí la app y ayudanos a llegar a más personas 🙌</p>
         </div>
-        <button id="btn-compartir" class="btn-primary px-4 py-2 text-xs rounded-xl flex-shrink-0">
+        <button id="btn-compartir" class="btn-accent px-4 py-2 text-xs rounded-xl flex-shrink-0">
           Compartir
         </button>
       </div>
@@ -437,65 +293,54 @@
 
     <!-- Comentarios y reclamos -->
     <section class="card p-5" id="seccion-comentarios">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-1" style="color:var(--text-muted)">
+      <p class="text-[10px] font-semibold uppercase tracking-widest mb-1" style="color:var(--text-3)">
         Comentarios y reclamos
       </p>
       <p class="text-sm font-bold mb-4" style="color:var(--text)">¿Encontraste un error o querés sugerir algo?</p>
 
       <form id="form-comentario" class="flex flex-col gap-3" novalidate>
         <div>
-          <label class="text-xs font-semibold block mb-1.5" style="color:var(--text-sec)">
+          <label class="text-xs font-semibold block mb-1.5" style="color:var(--text-2)">
             Nombre <span style="color:var(--accent)">*</span>
           </label>
           <input type="text" id="comentario-nombre" class="input-clean"
                  placeholder="Tu nombre completo" required maxlength="80">
         </div>
+
         <div>
-          <label class="text-xs font-semibold block mb-1.5" style="color:var(--text-sec)">
+          <label class="text-xs font-semibold block mb-1.5" style="color:var(--text-2)">
             Motivo del reclamo <span style="color:var(--accent)">*</span>
           </label>
-          <div class="relative">
-            <select id="comentario-motivo" class="select-clean px-4 py-3 pr-10" required>
-              <option value="">Seleccioná el motivo…</option>
-              <option value="Horario incorrecto">Horario incorrecto</option>
-              <option value="Servicio no disponible">Servicio no disponible</option>
-              <option value="Nuevo horario">Sugerir nuevo horario</option>
-              <option value="Error en la app">Error en la app</option>
-              <option value="Otro">Otro</option>
-            </select>
-            <div class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2">
-              <svg class="w-4 h-4" style="color:var(--text-muted)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </div>
-          </div>
+          <div id="select-motivo" class="csd"></div>
         </div>
+
         <div>
-          <label class="text-xs font-semibold block mb-1.5" style="color:var(--text-sec)">
+          <label class="text-xs font-semibold block mb-1.5" style="color:var(--text-2)">
             Comentario <span style="color:var(--accent)">*</span>
           </label>
           <textarea id="comentario-texto" class="input-clean"
                     placeholder="Describí el problema o sugerencia con detalle…" required maxlength="600"></textarea>
         </div>
+
         <p id="form-error" class="text-xs hidden font-semibold" style="color:var(--accent)"></p>
-        <button type="submit" class="btn-primary py-3 text-sm w-full">
+
+        <button type="submit" class="btn-accent py-3 text-sm w-full rounded-xl">
           Enviar comentario
         </button>
       </form>
+
       <div id="form-exito" class="hidden text-center py-4">
         <p class="text-3xl mb-2">✅</p>
         <p class="text-sm font-bold" style="color:#059669">¡Gracias por tu comentario!</p>
-        <p class="text-xs mt-1" style="color:var(--text-sec)">Lo revisaremos a la brevedad.</p>
+        <p class="text-xs mt-1" style="color:var(--text-2)">Lo revisaremos a la brevedad.</p>
       </div>
     </section>
 
 
     <!-- Footer -->
     <footer class="text-center pt-2 pb-4 space-y-2">
-      <p class="text-xs font-bold" style="color:var(--text-sec)">
-        © Andresito 2026
-      </p>
-      <p class="text-[11px]" style="color:var(--text-muted)">
+      <p class="text-xs font-bold" style="color:var(--text-2)">© Andresito 2026</p>
+      <p class="text-[11px]" style="color:var(--text-3)">
         Los horarios se actualizan regularmente. Ante cualquier inconveniente, dejanos tus comentarios 👆
       </p>
     </footer>
@@ -503,24 +348,25 @@
   </main>
 
 
-  <!-- Banner PWA -->
+  <!-- ══ BANNER PWA ══ -->
   <div id="install-banner" class="hidden fixed bottom-0 inset-x-0 p-4 z-50">
     <div class="card p-4 max-w-lg mx-auto flex items-center gap-3 shadow-xl">
-      <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md"
-           style="background:linear-gradient(135deg,#E84625,#0D1F46)">
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
+           style="background:linear-gradient(135deg,#FF4C1A 0%,#FF7240 100%);box-shadow:0 3px 10px rgba(255,76,26,.40)">
         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round"
                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
         </svg>
       </div>
       <div class="flex-1 min-w-0">
-        <p class="font-semibold text-sm leading-tight" style="color:var(--text)">Instalá la app</p>
-        <p class="text-[11px] mt-0.5" style="color:var(--text-sec)">Accedé sin internet desde tu pantalla de inicio</p>
+        <p class="font-semibold text-sm leading-tight" style="color:var(--text);font-family:'Outfit',sans-serif">Instalá la app</p>
+        <p class="text-[11px] mt-0.5" style="color:var(--text-2)">Accedé sin internet desde tu pantalla de inicio</p>
       </div>
       <div class="flex items-center gap-2 flex-shrink-0">
-        <button id="btn-instalar" class="btn-primary text-xs px-4 py-2 rounded-xl">Instalar</button>
-        <button id="btn-cerrar-banner" class="text-xl leading-none px-1 touch-feedback"
-                style="color:var(--text-muted);background:none;border:none;cursor:pointer">✕</button>
+        <button id="btn-instalar" class="btn-accent text-xs px-4 py-2 rounded-xl">Instalar</button>
+        <button id="btn-cerrar-banner"
+                style="color:var(--text-3);background:none;border:none;cursor:pointer;font-size:20px;line-height:1;padding:0 4px"
+                aria-label="Cerrar">✕</button>
       </div>
     </div>
   </div>

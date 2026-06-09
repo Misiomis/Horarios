@@ -3,175 +3,901 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin — Comentarios Andresito Bus</title>
+  <title>Admin — Andresito Bus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --accent:      #FF4C1A;
+      --accent-lt:   #FFF5F2;
+      --accent-mid:  rgba(255,76,26,.15);
+      --bg:          #F6F4F0;
+      --card:        #FFFFFF;
+      --border:      #EBEBEB;
+      --text:        #1C1C1C;
+      --text-2:      #6B6B6B;
+      --text-3:      #AAAAAA;
+      --header:      #111111;
+      --radius:      16px;
+      --r-sm:        10px;
+      --shadow:      0 1px 8px rgba(0,0,0,.06);
+      --warning:     #F59E0B;
+      --success:     #10B981;
+      --info:        #3B82F6;
+      --danger:      #EF4444;
+    }
     *{box-sizing:border-box;margin:0;padding:0}
-    :root{--accent:#E84625;--navy:#0D1F46;--text:#1A2140;--text-sec:#5A6480;--text-muted:#9CA3BF;--border:#E2E8F4;--card:#fff}
-    body{font-family:'Inter',sans-serif;background:linear-gradient(170deg,#EDF0FF 0%,#F3F6FF 55%,#FFF6F3 100%);min-height:100vh;color:var(--text)}
-    header{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 18px rgba(13,31,70,.28)}
-    header h1{color:white;font-size:16px;font-weight:800}
-    header span{color:rgba(255,255,255,.5);font-size:12px}
-    .wrap{max-width:640px;margin:0 auto;padding:24px 16px}
-    /* Login */
-    #login-section{display:flex;align-items:center;justify-content:center;min-height:70vh}
-    .login-card{background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:0 4px 22px rgba(13,31,70,.12);padding:32px 28px;width:100%;max-width:380px;text-align:center}
-    .login-card h2{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px}
-    .login-card p{font-size:13px;color:var(--text-sec);margin-bottom:24px}
-    .input-clean{background:white;border:1.5px solid var(--border);border-radius:12px;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;width:100%;padding:11px 14px;font-size:14px;font-family:inherit;margin-bottom:12px}
-    .input-clean:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,70,37,.12)}
-    .btn{background:var(--accent);color:white;border:none;border-radius:12px;font-weight:700;font-family:inherit;cursor:pointer;padding:12px;width:100%;font-size:14px;transition:background .2s}
-    .btn:hover{background:#cf3b1c}
-    .err{color:var(--accent);font-size:12px;font-weight:600;margin-top:-6px;margin-bottom:12px;display:none}
-    /* Panel */
-    #panel-section{display:none}
-    .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:gap}
-    .panel-header h2{font-size:18px;font-weight:800;color:var(--text)}
-    .count-badge{background:var(--accent);color:white;border-radius:999px;font-size:12px;font-weight:700;padding:3px 10px}
-    .btn-sm{background:white;border:1.5px solid var(--border);border-radius:10px;color:var(--text-sec);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:7px 14px;transition:border-color .2s}
+    body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;color:var(--text)}
+
+    /* ── Header ── */
+    .site-header{background:var(--header);position:sticky;top:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+    .header-brand{display:flex;align-items:center;gap:10px;font-family:'Outfit',sans-serif;font-weight:800;font-size:17px;color:white}
+    .logout-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;padding:6px 14px;transition:background .2s}
+    .logout-btn:hover{background:rgba(255,255,255,.2)}
+
+    /* ── Login ── */
+    #login-screen{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px);padding:24px 16px}
+    .login-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px 28px;width:100%;max-width:380px;text-align:center}
+    .login-icon{width:64px;height:64px;background:var(--accent-lt);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px}
+    .login-title{font-family:'Outfit',sans-serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:6px}
+    .login-sub{font-size:13px;color:var(--text-2);margin-bottom:28px}
+    .input-field{width:100%;padding:12px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;margin-bottom:12px}
+    .input-field:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,76,26,.1)}
+    .input-field.err{border-color:var(--danger)}
+    .error-msg{color:var(--danger);font-size:12px;font-weight:600;margin-bottom:12px;display:none}
+    .btn-primary{background:var(--accent);color:white;border:none;border-radius:var(--r-sm);font-weight:700;font-family:inherit;font-size:14px;cursor:pointer;padding:13px 20px;width:100%;transition:opacity .2s,transform .1s}
+    .btn-primary:hover{opacity:.9}
+    .btn-primary:active{transform:scale(.98)}
+
+    /* ── Main ── */
+    #main-screen{display:none}
+
+    /* ── Tabs ── */
+    .tab-bar{background:var(--card);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:56px;z-index:90}
+    .tab-bar::-webkit-scrollbar{display:none}
+    .tab-btn{flex-shrink:0;background:none;border:none;border-bottom:2.5px solid transparent;padding:14px 18px;font-size:13px;font-weight:600;font-family:inherit;color:var(--text-2);cursor:pointer;transition:color .2s,border-color .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-btn:hover:not(.active){color:var(--text)}
+    .tab-badge{background:var(--accent);color:white;border-radius:999px;font-size:10px;font-weight:700;padding:1px 6px;min-width:18px;text-align:center}
+
+    /* ── Content ── */
+    .content-wrap{max-width:760px;margin:0 auto;padding:24px 16px 48px}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    /* ── Cards ── */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .card-p{padding:20px}
+
+    /* ── Stats grid ── */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+    .stat-icon{font-size:22px;margin-bottom:8px}
+    .stat-value{font-family:'Outfit',sans-serif;font-size:28px;font-weight:900;color:var(--text);line-height:1}
+    .stat-label{font-size:12px;color:var(--text-2);margin-top:4px}
+
+    /* ── Section headers ── */
+    .section-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--text);margin-bottom:14px}
+    .action-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+
+    /* ── Buttons ── */
+    .btn-accent{background:var(--accent);color:white;border:none;border-radius:var(--r-sm);font-weight:700;font-family:inherit;font-size:13px;cursor:pointer;padding:10px 18px;transition:opacity .2s;display:inline-flex;align-items:center;gap:6px}
+    .btn-accent:hover{opacity:.9}
+    .btn-sm{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;color:var(--text-2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:7px 14px;transition:border-color .2s,color .2s;white-space:nowrap}
     .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
-    .btn-danger{background:#FFF1F2;border-color:#FECDD3;color:#DC2626}
-    .btn-danger:hover{background:#FEE2E2;border-color:#DC2626}
-    /* Comentario card */
-    .comment-card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 2px 10px rgba(13,31,70,.08);padding:16px;margin-bottom:12px}
-    .comment-card.nuevo{border-color:rgba(232,70,37,.28);background:linear-gradient(135deg,#FFF4F1,#fff)}
-    .cc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:10px}
-    .cc-nombre{font-size:14px;font-weight:700;color:var(--text)}
-    .cc-fecha{font-size:11px;color:var(--text-muted);flex-shrink:0}
-    .cc-motivo{display:inline-block;background:#FFF0EC;color:var(--accent);border:1px solid rgba(232,70,37,.28);border-radius:999px;font-size:11px;font-weight:700;padding:2px 10px;margin-bottom:8px}
-    .cc-texto{font-size:13px;color:var(--text-sec);line-height:1.55}
-    .cc-actions{display:flex;gap:8px;margin-top:12px}
-    .badge-new{background:var(--accent);color:white;border-radius:999px;font-size:10px;font-weight:700;padding:2px 7px;margin-left:6px}
-    .empty{text-align:center;padding:48px 20px;color:var(--text-muted)}
-    .empty span{font-size:40px;display:block;margin-bottom:10px}
-    .logout-btn{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:13px;font-family:inherit;padding:4px 8px;border-radius:6px;transition:color .2s}
-    .logout-btn:hover{color:white}
+    .btn-sm.ok{color:var(--success);border-color:#A7F3D0;background:#ECFDF5}
+    .btn-sm.ok:hover{border-color:var(--success)}
+    .btn-sm.del{color:var(--danger);border-color:#FECDD3;background:#FFF1F2}
+    .btn-sm.del:hover{border-color:var(--danger)}
+
+    /* ── Toggle switch ── */
+    .toggle{position:relative;width:40px;height:22px;flex-shrink:0;display:inline-block}
+    .toggle input{opacity:0;width:0;height:0;position:absolute}
+    .toggle-track{position:absolute;inset:0;background:#D1D5DB;border-radius:999px;cursor:pointer;transition:background .2s}
+    .toggle input:checked + .toggle-track{background:var(--success)}
+    .toggle-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:transform .2s;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+    .toggle input:checked ~ .toggle-thumb{transform:translateX(18px)}
+
+    /* ── Service rows ── */
+    .service-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);transition:background .15s}
+    .service-row:last-child{border-bottom:none}
+    .service-row:hover{background:#FAFAF9}
+    .service-row.disabled{opacity:.45}
+    .srv-ico{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+    .srv-info{flex:1;min-width:0}
+    .srv-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.3}
+    .srv-detail{font-size:11px;color:var(--text-2);margin-top:2px}
+    .time-input{width:70px;padding:6px 10px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);text-align:center;outline:none;transition:border-color .2s,box-shadow .2s}
+    .time-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,76,26,.1)}
+
+    /* ── Notice form ── */
+    .form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+    .form-row{margin-bottom:14px}
+    .form-label{font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;display:block}
+    .form-input{width:100%;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+    .form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,76,26,.1)}
+    textarea.form-input{resize:vertical;min-height:76px}
+    .date-pair{display:flex;gap:10px}
+    .date-pair .form-input{flex:1}
+
+    /* ── Type pills ── */
+    .type-selector{display:flex;gap:8px;flex-wrap:wrap}
+    .type-pill{padding:7px 14px;border-radius:999px;font-size:12px;font-weight:700;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;color:var(--text-2);transition:all .2s;font-family:inherit}
+    .type-pill.sel{color:white;border-color:transparent}
+    .type-pill[data-t="paro"].sel   {background:var(--danger)}
+    .type-pill[data-t="warning"].sel{background:var(--warning)}
+    .type-pill[data-t="info"].sel   {background:var(--info)}
+    .type-pill[data-t="success"].sel{background:var(--success)}
+
+    /* ── Notice cards ── */
+    .notice-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+    .n-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+    .n-body{flex:1}
+    .n-title{font-size:14px;font-weight:700;color:var(--text)}
+    .n-msg{font-size:12px;color:var(--text-2);margin-top:3px;line-height:1.4}
+    .n-meta{font-size:11px;color:var(--text-3);margin-top:5px}
+    .n-actions{display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0}
+
+    /* ── Comment cards ── */
+    .comment-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
+    .comment-card.unread{border-color:rgba(255,76,26,.25);background:#FFFAF9}
+    .cc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
+    .cc-name{font-size:14px;font-weight:700;color:var(--text)}
+    .cc-date{font-size:11px;color:var(--text-3);flex-shrink:0}
+    .cc-tag{display:inline-block;background:var(--accent-lt);color:var(--accent);border:1px solid rgba(255,76,26,.25);border-radius:999px;font-size:11px;font-weight:700;padding:2px 10px;margin-bottom:8px}
+    .cc-text{font-size:13px;color:var(--text-2);line-height:1.55}
+    .cc-foot{display:flex;gap:8px;margin-top:10px;align-items:center}
+    .badge-new{background:var(--accent);color:white;border-radius:999px;font-size:10px;font-weight:700;padding:2px 7px}
+
+    /* ── Chart ── */
+    .chart-wrap{overflow-x:auto;padding-bottom:4px}
+    .chart-bars{display:flex;align-items:flex-end;gap:6px;height:150px;min-width:100%;padding:0 4px}
+    .chart-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;min-width:30px;cursor:default}
+    .chart-bar{width:100%;border-radius:6px 6px 0 0;min-height:4px;transition:opacity .15s}
+    .chart-col:hover .chart-bar{opacity:.75}
+    .chart-lbl{font-size:9px;color:var(--text-3);text-align:center;white-space:nowrap}
+    .chart-val{font-size:10px;font-weight:700;color:var(--text-2);min-height:14px}
+
+    /* ── Motivo bars ── */
+    .motivo-row{margin-bottom:12px}
+    .motivo-head{display:flex;justify-content:space-between;margin-bottom:4px}
+    .motivo-name{font-size:13px;font-weight:600;color:var(--text)}
+    .motivo-count{font-size:13px;font-weight:700;color:var(--accent)}
+    .motivo-track{background:var(--border);border-radius:999px;height:8px;overflow:hidden}
+    .motivo-fill{height:100%;border-radius:999px;background:var(--accent);transition:width .5s ease}
+
+    /* ── Export modal ── */
+    .modal-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);padding:24px;overflow:auto;align-items:flex-start;justify-content:center}
+    .modal-overlay.open{display:flex}
+    .modal-box{background:var(--card);border-radius:var(--radius);max-width:640px;width:100%;padding:24px;margin:auto}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .modal-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800}
+    .export-block{background:#111111;border-radius:var(--r-sm);padding:16px;font-family:'Courier New',monospace;font-size:12px;color:#A3E635;max-height:260px;overflow-y:auto;white-space:pre;line-height:1.5}
+
+    /* ── Toast ── */
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--header);color:white;border-radius:999px;padding:10px 22px;font-size:13px;font-weight:600;z-index:999;pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap}
+    .toast.show{opacity:1}
+
+    /* ── Empty state ── */
+    .empty{text-align:center;padding:48px 20px;color:var(--text-3)}
+    .empty .ico{font-size:40px;margin-bottom:12px}
+    .empty p{font-size:14px}
+
+    /* ── Responsive ── */
+    @media(max-width:480px){
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .date-pair{flex-direction:column}
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>🚌 Admin — Andresito Bus</h1>
-    <button class="logout-btn" id="btn-logout" style="display:none" onclick="logout()">Cerrar sesión</button>
-  </header>
-
-  <!-- LOGIN -->
-  <div id="login-section">
-    <div class="login-card">
-      <h2>Panel de Administración</h2>
-      <p>Ingresá la contraseña para ver los comentarios recibidos.</p>
-      <input type="password" id="pwd-input" class="input-clean" placeholder="Contraseña" onkeydown="if(event.key==='Enter')login()">
-      <p id="pwd-error" class="err">Contraseña incorrecta.</p>
-      <button class="btn" onclick="login()">Ingresar</button>
-    </div>
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-brand">
+    <svg width="30" height="24" viewBox="0 0 36 28" fill="none">
+      <rect x="1" y="5" width="34" height="17" rx="3.5" fill="white"/>
+      <rect x="2.5" y="6.5" width="5" height="5" rx="1.5" fill="#111111" opacity=".45"/>
+      <rect x="9.5" y="6.5" width="5" height="5" rx="1.5" fill="#111111" opacity=".45"/>
+      <rect x="16.5" y="6.5" width="5" height="5" rx="1.5" fill="#111111" opacity=".45"/>
+      <rect x="23.5" y="6.5" width="5" height="5" rx="1.5" fill="#111111" opacity=".45"/>
+      <rect x="2.5" y="14" width="31" height="7" rx="1.5" fill="#F6F4F0"/>
+      <circle cx="7" cy="24" r="3" fill="white"/>
+      <circle cx="7" cy="24" r="1.5" fill="#111111" opacity=".4"/>
+      <circle cx="29" cy="24" r="3" fill="white"/>
+      <circle cx="29" cy="24" r="1.5" fill="#111111" opacity=".4"/>
+      <rect x="31" y="10" width="3.5" height="5" rx="1" fill="#FF4C1A"/>
+    </svg>
+    Admin — Andresito Bus
   </div>
+  <button class="logout-btn" id="btn-logout" style="display:none" onclick="logout()">Cerrar sesión</button>
+</header>
 
-  <!-- PANEL -->
-  <div id="panel-section" class="wrap">
-    <div class="panel-header">
-      <div style="display:flex;align-items:center;gap:10px">
-        <h2>Comentarios recibidos</h2>
-        <span class="count-badge" id="count-badge">0</span>
-      </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn-sm" onclick="marcarTodosVistos()">Marcar como vistos</button>
-        <button class="btn-sm btn-danger" onclick="limpiarTodo()">Limpiar todo</button>
-      </div>
-    </div>
-    <div id="lista-comentarios"></div>
+<!-- ══════════════════════════════════════
+     LOGIN
+══════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-icon">🔐</div>
+    <h1 class="login-title">Panel de Administración</h1>
+    <p class="login-sub">Ingresá la contraseña para acceder.</p>
+    <input type="password" id="pwd-input" class="input-field" placeholder="Contraseña"
+           onkeydown="if(event.key==='Enter')doLogin()">
+    <p class="error-msg" id="pwd-error">Contraseña incorrecta.</p>
+    <button class="btn-primary" onclick="doLogin()">Ingresar al panel</button>
   </div>
+</div>
 
-  <script>
-    const PASS = 'andresito2026';
-    const KEY  = 'andresito_comentarios';
+<!-- ══════════════════════════════════════
+     MAIN PANEL
+══════════════════════════════════════ -->
+<div id="main-screen">
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('horarios',this)">🕐 Horarios</button>
+    <button class="tab-btn" onclick="switchTab('avisos',this)">
+      📢 Avisos <span class="tab-badge" id="badge-avisos" style="display:none">0</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('estadisticas',this)">📈 Estadísticas</button>
+    <button class="tab-btn" onclick="switchTab('comentarios',this)">
+      💬 Comentarios <span class="tab-badge" id="badge-comentarios" style="display:none">0</span>
+    </button>
+  </nav>
 
-    function login() {
-      const val = document.getElementById('pwd-input').value;
-      if (val === PASS) {
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('panel-section').style.display = 'block';
-        document.getElementById('btn-logout').style.display = 'block';
-        renderComentarios();
-      } else {
-        document.getElementById('pwd-error').style.display = 'block';
-      }
-    }
+  <div class="content-wrap">
 
-    function logout() {
-      document.getElementById('login-section').style.display = 'flex';
-      document.getElementById('panel-section').style.display = 'none';
-      document.getElementById('btn-logout').style.display = 'none';
-      document.getElementById('pwd-input').value = '';
-    }
+    <!-- ── TAB: DASHBOARD ── -->
+    <div class="tab-panel active" id="tab-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👁️</div>
+          <div class="stat-value" id="stat-visitas">—</div>
+          <div class="stat-label">Visitas hoy</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💬</div>
+          <div class="stat-value" id="stat-comentarios">—</div>
+          <div class="stat-label">Comentarios</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📢</div>
+          <div class="stat-value" id="stat-avisos">—</div>
+          <div class="stat-label">Avisos activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🚌</div>
+          <div class="stat-value" id="stat-servicios">—</div>
+          <div class="stat-label">Servicios activos</div>
+        </div>
+      </div>
+      <div class="section-title">Comentarios recientes</div>
+      <div id="dash-comentarios"></div>
+    </div>
 
-    function getComentarios() {
-      try { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
-      catch(_) { return []; }
-    }
+    <!-- ── TAB: HORARIOS ── -->
+    <div class="tab-panel" id="tab-horarios">
+      <div class="action-bar">
+        <div>
+          <div class="section-title" style="margin-bottom:4px">Gestión de Horarios</div>
+          <p style="font-size:13px;color:var(--text-2);max-width:440px">
+            Activá/desactivá servicios y editá horarios de salida. Luego exportá
+            <code style="background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px">config.json</code>
+            y commitéalo a GitHub para aplicar los cambios a todos.
+          </p>
+        </div>
+        <button class="btn-accent" onclick="exportarConfig()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Exportar config.json
+        </button>
+      </div>
+      <div class="card" id="servicios-list"></div>
+    </div>
 
-    function saveComentarios(arr) {
-      localStorage.setItem(KEY, JSON.stringify(arr));
-    }
-
-    function renderComentarios() {
-      const lista = document.getElementById('lista-comentarios');
-      const badge = document.getElementById('count-badge');
-      const comentarios = getComentarios().reverse();
-
-      badge.textContent = comentarios.length;
-
-      if (comentarios.length === 0) {
-        lista.innerHTML = '<div class="empty"><span>💬</span><p>No hay comentarios aún.</p><p style="font-size:12px;margin-top:6px">Los comentarios enviados desde la app aparecerán aquí.</p></div>';
-        return;
-      }
-
-      lista.innerHTML = comentarios.map(c => `
-        <div class="comment-card${!c.visto ? ' nuevo' : ''}" id="cc-${c.id}">
-          <div class="cc-top">
-            <div>
-              <span class="cc-nombre">${esc(c.nombre)}</span>
-              ${!c.visto ? '<span class="badge-new">NUEVO</span>' : ''}
-            </div>
-            <span class="cc-fecha">${esc(c.fecha)}</span>
-          </div>
-          <span class="cc-motivo">${esc(c.motivo)}</span>
-          <p class="cc-texto">${esc(c.texto)}</p>
-          <div class="cc-actions">
-            ${!c.visto ? `<button class="btn-sm" onclick="marcarVisto(${c.id})">Marcar como visto</button>` : '<span style="font-size:11px;color:#9CA3BF">✓ Visto</span>'}
-            <button class="btn-sm btn-danger" onclick="eliminar(${c.id})">Eliminar</button>
+    <!-- ── TAB: AVISOS ── -->
+    <div class="tab-panel" id="tab-avisos">
+      <div class="section-title">Nuevo aviso</div>
+      <div class="form-card">
+        <div class="form-row">
+          <label class="form-label">Tipo</label>
+          <div class="type-selector">
+            <button class="type-pill sel" data-t="paro"    onclick="selTipo(this)">🚫 Paro</button>
+            <button class="type-pill"     data-t="warning" onclick="selTipo(this)">⚠️ Advertencia</button>
+            <button class="type-pill"     data-t="info"    onclick="selTipo(this)">ℹ️ Información</button>
+            <button class="type-pill"     data-t="success" onclick="selTipo(this)">✅ Positivo</button>
           </div>
         </div>
-      `).join('');
-    }
+        <div class="form-row">
+          <label class="form-label" for="av-titulo">Título *</label>
+          <input type="text" id="av-titulo" class="form-input" placeholder="Ej: Paro de colectivos — 10 de junio">
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="av-msg">Mensaje (opcional)</label>
+          <textarea id="av-msg" class="form-input" placeholder="Detalle adicional para los usuarios..."></textarea>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Vigencia (opcional)</label>
+          <div class="date-pair">
+            <input type="date" id="av-desde" class="form-input">
+            <input type="date" id="av-hasta" class="form-input">
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px">
+          <button class="btn-sm" onclick="limpiarFormAviso()">Limpiar</button>
+          <button class="btn-accent" onclick="agregarAviso()">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            Publicar aviso
+          </button>
+        </div>
+      </div>
 
-    function esc(str) {
-      return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    }
+      <div class="action-bar">
+        <div class="section-title" style="margin-bottom:0">Avisos publicados</div>
+        <button class="btn-accent" onclick="exportarConfig()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Exportar config.json
+        </button>
+      </div>
+      <div id="avisos-list"></div>
+    </div>
 
-    function marcarVisto(id) {
-      const arr = getComentarios().map(c => c.id === id ? {...c, visto:true} : c);
-      saveComentarios(arr);
-      renderComentarios();
-    }
+    <!-- ── TAB: ESTADÍSTICAS ── -->
+    <div class="tab-panel" id="tab-estadisticas">
+      <div class="section-title">Tráfico — últimos 14 días</div>
+      <p style="font-size:13px;color:var(--text-2);margin-bottom:16px">Consultas únicas por día registradas vía CountAPI.</p>
 
-    function marcarTodosVistos() {
-      const arr = getComentarios().map(c => ({...c, visto:true}));
-      saveComentarios(arr);
-      renderComentarios();
-    }
+      <div class="card card-p" style="margin-bottom:16px">
+        <div class="chart-wrap">
+          <div class="chart-bars" id="chart-bars">
+            <div class="empty"><p>Cargando datos...</p></div>
+          </div>
+        </div>
+      </div>
 
-    function eliminar(id) {
-      if (!confirm('¿Eliminar este comentario?')) return;
-      saveComentarios(getComentarios().filter(c => c.id !== id));
-      renderComentarios();
-    }
+      <div class="stats-grid" style="margin-bottom:24px">
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-value" id="est-hoy">—</div>
+          <div class="stat-label">Visitas hoy</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📆</div>
+          <div class="stat-value" id="est-7d">—</div>
+          <div class="stat-label">Últimos 7 días</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-value" id="est-max">—</div>
+          <div class="stat-label">Mejor día</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📊</div>
+          <div class="stat-value" id="est-avg">—</div>
+          <div class="stat-label">Promedio / día</div>
+        </div>
+      </div>
 
-    function limpiarTodo() {
-      if (!confirm('¿Eliminar TODOS los comentarios? Esta acción no se puede deshacer.')) return;
-      localStorage.removeItem(KEY);
-      renderComentarios();
+      <div class="section-title">Comentarios por motivo</div>
+      <div class="card card-p" id="motivos-chart"></div>
+    </div>
+
+    <!-- ── TAB: COMENTARIOS ── -->
+    <div class="tab-panel" id="tab-comentarios">
+      <div class="action-bar">
+        <div class="section-title" style="margin-bottom:0">Comentarios recibidos</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-sm ok" onclick="marcarTodosVistos()">Marcar todos vistos</button>
+          <button class="btn-sm del" onclick="limpiarTodos()">Limpiar todo</button>
+        </div>
+      </div>
+      <div id="lista-comentarios"></div>
+    </div>
+
+  </div><!-- /content-wrap -->
+</div><!-- /main-screen -->
+
+<!-- ══════════════════════════════════════
+     EXPORT MODAL
+══════════════════════════════════════ -->
+<div class="modal-overlay" id="export-modal" onclick="if(event.target===this)cerrarExport()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="modal-title">Exportar config.json</span>
+      <button class="btn-sm" onclick="cerrarExport()">Cerrar</button>
+    </div>
+    <p style="font-size:13px;color:var(--text-2);margin-bottom:14px;line-height:1.5">
+      Copiá este contenido, pegalo en el archivo
+      <code style="background:var(--bg);padding:1px 6px;border-radius:4px">config.json</code>
+      del repositorio y commitéalo a GitHub. Los cambios serán visibles para todos en minutos.
+    </p>
+    <div class="export-block" id="export-content"></div>
+    <div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end">
+      <button class="btn-sm" onclick="cerrarExport()">Cerrar</button>
+      <button class="btn-accent" onclick="copiarConfig()">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copiar al portapapeles
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+/* ══════════════════════════════════════
+   CONSTANTS
+══════════════════════════════════════ */
+const PASS              = 'andresito2026';
+const KEY_COMENTARIOS   = 'andresito_comentarios';
+const KEY_DISABLED      = 'admin_servicios_deshabilitados';
+const KEY_OVERRIDES     = 'admin_servicios_overrides';
+const KEY_AVISOS        = 'admin_avisos';
+
+/* ══════════════════════════════════════
+   AUTH
+══════════════════════════════════════ */
+function doLogin() {
+  const val = document.getElementById('pwd-input').value;
+  if (val === PASS) {
+    document.getElementById('pwd-error').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-screen').style.display = 'block';
+    document.getElementById('btn-logout').style.display = 'block';
+    initPanel();
+  } else {
+    document.getElementById('pwd-error').style.display = 'block';
+    const inp = document.getElementById('pwd-input');
+    inp.classList.add('err');
+    setTimeout(() => inp.classList.remove('err'), 1500);
+  }
+}
+
+function logout() {
+  document.getElementById('login-screen').style.display = '';
+  document.getElementById('main-screen').style.display = 'none';
+  document.getElementById('btn-logout').style.display = 'none';
+  document.getElementById('pwd-input').value = '';
+}
+
+/* ══════════════════════════════════════
+   TABS
+══════════════════════════════════════ */
+let currentTab = 'dashboard';
+let statsLoaded = false;
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+  currentTab = tab;
+  if (tab === 'estadisticas' && !statsLoaded) { statsLoaded = true; cargarEstadisticas(); }
+  if (tab === 'comentarios')  renderComentarios();
+  if (tab === 'horarios')     renderHorarios();
+  if (tab === 'avisos')       renderAvisos();
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+function initPanel() {
+  renderDashboard();
+  renderHorarios();
+  renderAvisos();
+  actualizarBadges();
+}
+
+/* ══════════════════════════════════════
+   STORAGE HELPERS
+══════════════════════════════════════ */
+function getLS(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+  catch(_) { return fallback; }
+}
+function setLS(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+const getDisabled  = () => getLS(KEY_DISABLED,  []);
+const getOverrides = () => getLS(KEY_OVERRIDES, {});
+const getAvisos    = () => getLS(KEY_AVISOS,    []);
+const getComentarios = () => getLS(KEY_COMENTARIOS, []);
+const saveDisabled   = v => setLS(KEY_DISABLED, v);
+const saveOverrides  = v => setLS(KEY_OVERRIDES, v);
+const saveAvisos     = v => setLS(KEY_AVISOS, v);
+const saveComentarios = v => setLS(KEY_COMENTARIOS, v);
+
+/* ══════════════════════════════════════
+   BADGES
+══════════════════════════════════════ */
+function actualizarBadges() {
+  const noLeidos = getComentarios().filter(c => !c.visto).length;
+  const badgeC = document.getElementById('badge-comentarios');
+  if (noLeidos > 0) { badgeC.textContent = noLeidos; badgeC.style.display = 'inline-block'; }
+  else { badgeC.style.display = 'none'; }
+
+  const activosN = getAvisos().filter(a => a.activo).length;
+  const badgeA = document.getElementById('badge-avisos');
+  if (activosN > 0) { badgeA.textContent = activosN; badgeA.style.display = 'inline-block'; }
+  else { badgeA.style.display = 'none'; }
+}
+
+/* ══════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════ */
+async function renderDashboard() {
+  const comentarios = getComentarios();
+  const avisos      = getAvisos().filter(a => a.activo).length;
+  const disabled    = getDisabled();
+  const activos     = APP_DATA.servicios.filter(s => !disabled.includes(s.id)).length;
+
+  document.getElementById('stat-comentarios').textContent = comentarios.length;
+  document.getElementById('stat-avisos').textContent      = avisos;
+  document.getElementById('stat-servicios').textContent   = activos;
+
+  // Today's visits
+  try {
+    const cached = localStorage.getItem('andresito_visitas_hoy');
+    if (cached) {
+      const d = JSON.parse(cached);
+      if (d.fecha === today()) document.getElementById('stat-visitas').textContent = d.count;
     }
-  </script>
+    const res = await fetch(`https://api.countapi.xyz/get/andresito-bus-misiones/${today()}`);
+    if (res.ok) {
+      const d = await res.json();
+      const v = d.value || 0;
+      document.getElementById('stat-visitas').textContent = v;
+    }
+  } catch(_) {}
+
+  // Recent comments
+  const recientes = [...comentarios].reverse().slice(0, 3);
+  const ctn = document.getElementById('dash-comentarios');
+  if (recientes.length === 0) {
+    ctn.innerHTML = '<div class="card card-p"><div class="empty"><div class="ico">💬</div><p>No hay comentarios aún</p></div></div>';
+    return;
+  }
+  ctn.innerHTML = recientes.map(c => commentCard(c, true)).join('');
+}
+
+/* ══════════════════════════════════════
+   HORARIOS
+══════════════════════════════════════ */
+function renderHorarios() {
+  const disabled  = getDisabled();
+  const overrides = getOverrides();
+
+  const rows = APP_DATA.servicios.map(s => {
+    const emp      = APP_DATA.empresas[s.empresa];
+    const isDis    = disabled.includes(s.id);
+    const ov       = overrides[String(s.id)] || {};
+    const salida   = ov.salida ?? (s.salida || '—');
+    const diasStr  = s.dias.map(d => ({lv:'L-V', sabado:'Sáb', domingo:'Dom'}[d] || d)).join(', ');
+    const tipoTag  = s.tipo === 'llegada' ? 'Llega' : s.tipo === 'area' ? 'Área' : 'Sale';
+
+    return `
+      <div class="service-row${isDis ? ' disabled' : ''}" id="srow-${s.id}">
+        <span class="srv-ico">${emp.icono}</span>
+        <div class="srv-info">
+          <div class="srv-name">${esc(emp.nombre)} → ${esc(s.destino)}</div>
+          <div class="srv-detail">${diasStr} · ${tipoTag}${s.categoria !== 'Servicio regular' ? ' · ' + esc(s.categoria) : ''}</div>
+        </div>
+        <div style="flex-shrink:0;display:flex;align-items:center;gap:6px">
+          <span style="font-size:10px;color:var(--text-3);font-weight:700">SALE</span>
+          <input type="text" class="time-input" value="${esc(salida)}"
+                 onchange="actualizarHorario(${s.id}, this.value)"
+                 placeholder="HH:MM">
+        </div>
+        <label class="toggle">
+          <input type="checkbox" ${isDis ? '' : 'checked'} onchange="toggleServicio(${s.id}, this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>`;
+  }).join('');
+
+  document.getElementById('servicios-list').innerHTML = rows;
+}
+
+function toggleServicio(id, enabled) {
+  let dis = getDisabled();
+  if (enabled) dis = dis.filter(d => d !== id);
+  else if (!dis.includes(id)) dis.push(id);
+  saveDisabled(dis);
+  document.getElementById('srow-' + id)?.classList.toggle('disabled', !enabled);
+  actualizarBadges();
+  showToast(enabled ? '✅ Servicio habilitado' : '🚫 Servicio deshabilitado');
+}
+
+function actualizarHorario(id, val) {
+  if (!/^\d{1,2}:\d{2}$/.test(val.trim())) {
+    showToast('⚠️ Formato inválido. Usá HH:MM');
+    return;
+  }
+  const ov = getOverrides();
+  if (!ov[String(id)]) ov[String(id)] = {};
+  ov[String(id)].salida = val.trim();
+  saveOverrides(ov);
+  showToast('✅ Horario guardado');
+}
+
+/* ══════════════════════════════════════
+   AVISOS
+══════════════════════════════════════ */
+let tipoSel = 'paro';
+
+function selTipo(btn) {
+  document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('sel'));
+  btn.classList.add('sel');
+  tipoSel = btn.dataset.t;
+}
+
+function agregarAviso() {
+  const titulo = document.getElementById('av-titulo').value.trim();
+  if (!titulo) { showToast('⚠️ El título es obligatorio'); return; }
+  const aviso = {
+    id:         Date.now(),
+    tipo:       tipoSel,
+    titulo,
+    mensaje:    document.getElementById('av-msg').value.trim(),
+    fechaInicio: document.getElementById('av-desde').value || null,
+    fechaFin:   document.getElementById('av-hasta').value || null,
+    activo:     true,
+    creado:     new Date().toISOString()
+  };
+  const arr = getAvisos();
+  arr.push(aviso);
+  saveAvisos(arr);
+  limpiarFormAviso();
+  renderAvisos();
+  actualizarBadges();
+  showToast('✅ Aviso creado. Exportá config.json para aplicarlo.');
+}
+
+function limpiarFormAviso() {
+  ['av-titulo','av-msg','av-desde','av-hasta'].forEach(id => document.getElementById(id).value = '');
+}
+
+function renderAvisos() {
+  const avisos = getAvisos();
+  const ctn    = document.getElementById('avisos-list');
+  actualizarBadges();
+
+  if (avisos.length === 0) {
+    ctn.innerHTML = '<div class="card card-p"><div class="empty"><div class="ico">📢</div><p>No hay avisos publicados</p></div></div>';
+    return;
+  }
+
+  const clr = { paro:'#EF4444', warning:'#F59E0B', info:'#3B82F6', success:'#10B981' };
+
+  ctn.innerHTML = [...avisos].reverse().map(a => `
+    <div class="notice-card">
+      <div class="n-dot" style="background:${clr[a.tipo] || '#3B82F6'}"></div>
+      <div class="n-body">
+        <div class="n-title">${esc(a.titulo)}</div>
+        ${a.mensaje ? `<div class="n-msg">${esc(a.mensaje)}</div>` : ''}
+        <div class="n-meta">
+          ${a.fechaInicio ? 'Desde ' + a.fechaInicio : ''}
+          ${a.fechaFin    ? ' hasta ' + a.fechaFin   : ''}
+          ${!a.fechaInicio && !a.fechaFin ? 'Sin fecha de vencimiento' : ''}
+          · ${a.activo ? '<span style="color:var(--success);font-weight:700">Activo</span>' : '<span style="color:var(--text-3)">Inactivo</span>'}
+        </div>
+      </div>
+      <div class="n-actions">
+        <label class="toggle" style="transform:scale(.9)">
+          <input type="checkbox" ${a.activo ? 'checked' : ''} onchange="toggleAviso(${a.id}, this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+        <button class="btn-sm del" style="padding:4px 10px;font-size:11px" onclick="eliminarAviso(${a.id})">Eliminar</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleAviso(id, activo) {
+  saveAvisos(getAvisos().map(a => a.id === id ? {...a, activo} : a));
+  renderAvisos();
+  actualizarBadges();
+}
+
+function eliminarAviso(id) {
+  if (!confirm('¿Eliminar este aviso?')) return;
+  saveAvisos(getAvisos().filter(a => a.id !== id));
+  renderAvisos();
+  actualizarBadges();
+}
+
+/* ══════════════════════════════════════
+   ESTADÍSTICAS
+══════════════════════════════════════ */
+async function cargarEstadisticas() {
+  const DAYS  = 14;
+  const fechas = [];
+  const base   = new Date();
+  for (let i = DAYS - 1; i >= 0; i--) {
+    const d = new Date(base);
+    d.setDate(d.getDate() - i);
+    fechas.push(d.toISOString().split('T')[0]);
+  }
+
+  document.getElementById('chart-bars').innerHTML =
+    '<div style="padding:20px;color:var(--text-3);font-size:13px;width:100%;text-align:center">Cargando datos de tráfico...</div>';
+
+  const resultados = await Promise.all(fechas.map(async fecha => {
+    try {
+      const res = await fetch(`https://api.countapi.xyz/get/andresito-bus-misiones/${fecha}`);
+      const d   = await res.json();
+      return { fecha, count: d.value || 0 };
+    } catch(_) { return { fecha, count: 0 }; }
+  }));
+
+  const valores  = resultados.map(r => r.count);
+  const maxVal   = Math.max(...valores, 1);
+  const hoyStr   = today();
+
+  const total7   = valores.slice(-7).reduce((a, b) => a + b, 0);
+  const totalAll = valores.reduce((a, b) => a + b, 0);
+  const promedio  = Math.round(totalAll / DAYS);
+  const maxDia   = Math.max(...valores);
+  const hoyCount = valores[valores.length - 1];
+
+  document.getElementById('est-hoy').textContent  = hoyCount;
+  document.getElementById('est-7d').textContent   = total7;
+  document.getElementById('est-max').textContent  = maxDia;
+  document.getElementById('est-avg').textContent  = promedio;
+  document.getElementById('stat-visitas').textContent = hoyCount;
+
+  const cols = resultados.map(r => {
+    const d   = new Date(r.fecha + 'T12:00:00');
+    const lbl = d.toLocaleDateString('es-AR', { day:'2-digit', month:'2-digit' });
+    const h   = Math.max(4, Math.round((r.count / maxVal) * 130));
+    const bg  = r.fecha === hoyStr ? 'var(--accent)' : '#D1D5DB';
+    return `
+      <div class="chart-col" title="${r.fecha}: ${r.count} visitas">
+        <div class="chart-val">${r.count > 0 ? r.count : ''}</div>
+        <div class="chart-bar" style="height:${h}px;background:${bg}"></div>
+        <div class="chart-lbl">${lbl}</div>
+      </div>`;
+  }).join('');
+  document.getElementById('chart-bars').innerHTML = cols;
+
+  renderMotivoChart();
+}
+
+function renderMotivoChart() {
+  const comentarios = getComentarios();
+  const ctn = document.getElementById('motivos-chart');
+  if (comentarios.length === 0) {
+    ctn.innerHTML = '<div class="empty"><div class="ico">📊</div><p>No hay comentarios aún</p></div>';
+    return;
+  }
+  const counts = {};
+  comentarios.forEach(c => { counts[c.motivo] = (counts[c.motivo] || 0) + 1; });
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const max = sorted[0][1];
+
+  ctn.innerHTML = sorted.map(([motivo, count]) => {
+    const pct = Math.round((count / max) * 100);
+    return `
+      <div class="motivo-row">
+        <div class="motivo-head">
+          <span class="motivo-name">${esc(motivo)}</span>
+          <span class="motivo-count">${count}</span>
+        </div>
+        <div class="motivo-track">
+          <div class="motivo-fill" style="width:${pct}%"></div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════
+   COMENTARIOS
+══════════════════════════════════════ */
+function commentCard(c, compact) {
+  return `
+    <div class="comment-card${!c.visto ? ' unread' : ''}" id="cc-${c.id}">
+      <div class="cc-top">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="cc-name">${esc(c.nombre)}</span>
+          ${!c.visto ? '<span class="badge-new">NUEVO</span>' : ''}
+        </div>
+        <span class="cc-date">${esc(c.fecha)}</span>
+      </div>
+      <span class="cc-tag">${esc(c.motivo)}</span>
+      <p class="cc-text">${esc(c.texto)}</p>
+      ${!compact ? `
+      <div class="cc-foot">
+        ${!c.visto ? `<button class="btn-sm ok" onclick="marcarVisto(${c.id})">Marcar visto</button>` : '<span style="font-size:11px;color:var(--text-3)">✓ Visto</span>'}
+        <button class="btn-sm del" onclick="eliminarComentario(${c.id})">Eliminar</button>
+      </div>` : ''}
+    </div>`;
+}
+
+function renderComentarios() {
+  const comentarios = [...getComentarios()].reverse();
+  const ctn = document.getElementById('lista-comentarios');
+  if (comentarios.length === 0) {
+    ctn.innerHTML = '<div class="card card-p"><div class="empty"><div class="ico">💬</div><p>No hay comentarios aún</p></div></div>';
+  } else {
+    ctn.innerHTML = comentarios.map(c => commentCard(c, false)).join('');
+  }
+  actualizarBadges();
+}
+
+function marcarVisto(id) {
+  saveComentarios(getComentarios().map(c => c.id === id ? {...c, visto: true} : c));
+  renderComentarios();
+  actualizarBadges();
+}
+
+function marcarTodosVistos() {
+  saveComentarios(getComentarios().map(c => ({...c, visto: true})));
+  renderComentarios();
+  actualizarBadges();
+}
+
+function eliminarComentario(id) {
+  if (!confirm('¿Eliminar este comentario?')) return;
+  saveComentarios(getComentarios().filter(c => c.id !== id));
+  renderComentarios();
+  actualizarBadges();
+}
+
+function limpiarTodos() {
+  if (!confirm('¿Eliminar TODOS los comentarios? Esta acción no se puede deshacer.')) return;
+  localStorage.removeItem(KEY_COMENTARIOS);
+  renderComentarios();
+  actualizarBadges();
+}
+
+/* ══════════════════════════════════════
+   EXPORT CONFIG.JSON
+══════════════════════════════════════ */
+function exportarConfig() {
+  const config = {
+    version: '1.0',
+    updated: today(),
+    avisos: getAvisos().filter(a => a.activo),
+    serviciosDeshabilitados: getDisabled(),
+    serviciosOverrides: getOverrides()
+  };
+  document.getElementById('export-content').textContent = JSON.stringify(config, null, 2);
+  document.getElementById('export-modal').classList.add('open');
+}
+
+function cerrarExport() {
+  document.getElementById('export-modal').classList.remove('open');
+}
+
+async function copiarConfig() {
+  try {
+    await navigator.clipboard.writeText(document.getElementById('export-content').textContent);
+    showToast('✅ Copiado al portapapeles');
+  } catch(_) {
+    showToast('⚠️ Copiá el texto manualmente');
+  }
+}
+
+/* ══════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════ */
+function today() { return new Date().toISOString().split('T')[0]; }
+
+function esc(str) {
+  return String(str ?? '').replace(/[&<>"']/g,
+    c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])
+  );
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), 2600);
+}
+</script>
 </body>
 </html>
