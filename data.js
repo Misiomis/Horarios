@@ -6,8 +6,8 @@
  */
 
 const APP_DATA = {
-  version: '2.0.0',
-  ultimaActualizacion: '2025-05-02',
+  version: '2.1.0',
+  ultimaActualizacion: '2026-06-09',
 
   /* ─── Empresas operadoras ─── */
   empresas: {
@@ -37,7 +37,7 @@ const APP_DATA = {
     },
     kenia: {
       id: 'kenia',
-      nombre: 'Kenia',
+      nombre: 'Kenya',
       color: '#F87171',
       colorAlpha: 'rgba(248,113,113,.18)',
       icono: '🔴',
@@ -181,8 +181,8 @@ const APP_DATA = {
       salida:     '03:40',
       llegada:    '09:30',
       paradas:    [],
-      dias:       ['lv', 'sabado', 'domingo'],
-      notas:      ''
+      dias:       ['lv', 'sabado'],
+      notas:      'No opera los domingos'
     },
 
     // VUELTA: Oberá → Andresito  (la hora mostrada es la de llegada a Andresito)
@@ -275,17 +275,35 @@ const APP_DATA = {
       notas:      ''
     },
 
-    // Andresito → San Vicente (17:10)
+    // Andresito → Oberá (07:30) — todos los días
     {
-      id: 10,
+      id: 26,
       empresa:    'expresoSelva',
       numero:     null,
       categoria:  'Servicio regular',
       servicio:   null,
       tipo:       'salida',
       origen:     'Cdte. Andresito',
+      destino:    'Oberá',
+      destinoId:  'obera',
+      salida:     '07:30',
+      llegada:    null,
+      paradas:    [],
+      dias:       ['lv', 'sabado', 'domingo'],
+      notas:      ''
+    },
+
+    // Andresito → San Vicente (17:10) — Sol del Norte
+    {
+      id: 10,
+      empresa:    'solDelNorte',
+      numero:     null,
+      categoria:  'Servicio regular',
+      servicio:   null,
+      tipo:       'salida',
+      origen:     'Cdte. Andresito',
       destino:    'San Vicente',
-      destinoId:  'eldorado',
+      destinoId:  'sanvicente',
       salida:     '17:10',
       llegada:    null,
       paradas:    ['Wanda', 'Esperanza', 'Eldorado', 'Santiago Liniers', 'Pozo Azul', 'San Pedro', 'San Vicente'],
@@ -326,7 +344,7 @@ const APP_DATA = {
       origen:     'Cdte. Andresito',
       destino:    'Apóstoles',
       destinoId:  'apostoles',
-      salida:     '14:15',
+      salida:     '14:00',
       llegada:    null,
       paradas:    ['Piñalito Norte', 'San Antonio', 'Irigoyen', 'San Pedro', 'San Vicente', '2 de Mayo', 'Aristóbulo del Valle', 'Campo Viera', 'Campo Grande', 'Oberá', 'Alem', 'Apóstoles'],
       dias:       ['lv', 'sabado', 'domingo'],
@@ -351,8 +369,8 @@ const APP_DATA = {
       salida:     '05:00',
       llegada:    null,
       paradas:    ['Piñalito Norte', 'San Antonio', 'Irigoyen', 'Dos Hermanas', 'Pozo Azul', 'Eldorado'],
-      dias:       ['lv', 'sabado', 'domingo'],
-      notas:      ''
+      dias:       ['lv'],
+      notas:      'Solo lunes a viernes'
     },
 
     // 10:30 → San Vicente (sale desde Piñalito Norte, ruta de área)
@@ -391,8 +409,8 @@ const APP_DATA = {
       salida:     '07:30',
       llegada:    null,
       paradas:    ['Piñalito Norte', 'San Antonio'],
-      dias:       ['lv', 'sabado', 'domingo'],
-      notas:      ''
+      dias:       ['lv', 'sabado'],
+      notas:      'Sábado: viene desde Puerto Iguazú, circula solo hasta San Antonio'
     },
 
     // 13:30 → Bdo. de Irigoyen
@@ -409,8 +427,8 @@ const APP_DATA = {
       salida:     '13:30',
       llegada:    null,
       paradas:    ['San Antonio', 'Irigoyen'],
-      dias:       ['lv', 'sabado', 'domingo'],
-      notas:      ''
+      dias:       ['lv'],
+      notas:      'Solo lunes a viernes'
     },
 
     // 18:00 → Puerto Iguazú
@@ -427,8 +445,8 @@ const APP_DATA = {
       salida:     '18:00',
       llegada:    null,
       paradas:    ['Wanda', 'Puerto Iguazú'],
-      dias:       ['lv', 'sabado', 'domingo'],
-      notas:      ''
+      dias:       ['lv', 'domingo'],
+      notas:      'No opera los sábados. Domingo: retoma hacia Puerto Iguazú'
     },
 
     // ════════════════════════════════════════════

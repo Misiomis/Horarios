@@ -6,7 +6,7 @@
 
   <!-- PWA / SEO meta -->
   <meta name="description" content="Consulta de horarios de colectivos de Comandante Andresito, Misiones. Kenia, Expreso Singer, Crucero del Norte y Horianski.">
-  <meta name="theme-color" content="#1B3A2A">
+  <meta name="theme-color" content="#0D1F46">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Andresito Bus">
@@ -44,26 +44,26 @@
   </script>
 
   <style>
-    /* ── Variables de paleta tierra misionera ── */
+    /* ── Variables — paleta Plataforma 10 ── */
     :root {
-      --verde-900: #071A10;
-      --verde-800: #0F2B1A;
-      --verde-700: #1B3A2A;
-      --verde-600: #2D6A4F;
-      --verde-500: #40916C;
-      --verde-400: #52B788;
-      --ocre-500:  #C9A84C;
-      --ocre-400:  #D4BA6A;
-      --tierra:    #5C2E0A;
-      --roja:      #8B1A0A;
+      --nav-900: #040B1E;
+      --nav-800: #081430;
+      --nav-700: #0D1F46;
+      --nav-600: #152D5F;
+      --nav-500: #1E3E80;
+      --nav-400: #2B55A0;
+      --acento:  #E84625;
+      --acento2: #FF7050;
+      --azul:    #2196F3;
+      --azul2:   #64B5F6;
     }
 
-    /* ── Fondo degradado tierra roja + monte misionero ── */
+    /* ── Fondo degradado azul navy — estilo plataforma de transporte ── */
     body {
       background:
-        radial-gradient(ellipse at 20% 0%,   rgba(45,106,79,.35) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 100%,  rgba(139,26,10,.40) 0%, transparent 55%),
-        linear-gradient(160deg, #071A10 0%, #0F2B1A 35%, #1B3A2A 60%, #3D1505 85%, #5C1000 100%);
+        radial-gradient(ellipse at 20% 0%,   rgba(30,70,200,.30) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 100%,  rgba(232,70,37,.30) 0%, transparent 55%),
+        linear-gradient(160deg, #040B1E 0%, #081430 40%, #0D1F46 65%, #1A0C35 85%, #0F0820 100%);
       background-attachment: fixed;
       min-height: 100vh;
       -webkit-tap-highlight-color: transparent;
@@ -71,60 +71,64 @@
 
     /* ── Glassmorphism ── */
     .glass {
-      background: rgba(255,255,255,.065);
-      backdrop-filter: blur(22px) saturate(150%);
-      -webkit-backdrop-filter: blur(22px) saturate(150%);
-      border: 1px solid rgba(255,255,255,.11);
+      background: rgba(255,255,255,.055);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      border: 1px solid rgba(255,255,255,.12);
+      border-top: 1px solid rgba(255,255,255,.20);
+      box-shadow: 0 8px 32px rgba(0,0,0,.45);
     }
 
     .glass-header {
-      background: rgba(7,26,16,.82);
-      backdrop-filter: blur(30px) saturate(180%);
-      -webkit-backdrop-filter: blur(30px) saturate(180%);
-      border-bottom: 1px solid rgba(255,255,255,.07);
+      background: rgba(4,11,30,.84);
+      backdrop-filter: blur(30px) saturate(200%);
+      -webkit-backdrop-filter: blur(30px) saturate(200%);
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      box-shadow: 0 4px 30px rgba(0,0,0,.5);
     }
 
     .glass-proximo {
-      background: linear-gradient(135deg,rgba(201,168,76,.18) 0%,rgba(139,26,10,.15) 100%);
+      background: linear-gradient(135deg, rgba(232,70,37,.14) 0%, rgba(13,31,70,.20) 100%);
       backdrop-filter: blur(22px);
       -webkit-backdrop-filter: blur(22px);
-      border: 1px solid rgba(201,168,76,.32);
-      box-shadow: 0 0 40px rgba(201,168,76,.1), 0 20px 50px rgba(0,0,0,.35);
+      border: 1px solid rgba(232,70,37,.28);
+      border-top: 1px solid rgba(232,70,37,.50);
+      box-shadow: 0 10px 40px rgba(232,70,37,.14), 0 20px 50px rgba(0,0,0,.35);
     }
 
     /* ── Filtros pill ── */
     .filter-pill {
-      background: rgba(255,255,255,.07);
+      background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.10);
       transition: background .2s, border-color .2s, color .2s, transform .15s;
     }
     .filter-pill.active {
-      background: rgba(201,168,76,.2);
-      border-color: rgba(201,168,76,.45);
-      color: #D4BA6A;
+      background: rgba(232,70,37,.22);
+      border-color: rgba(232,70,37,.65);
+      color: #FF7050;
     }
-    .filter-pill:active  { transform: scale(.94); }
+    .filter-pill:active { transform: scale(.94); }
 
     /* ── Animación de entrada de tarjetas ── */
     .card-enter {
-      animation: cardSlideIn .4s cubic-bezier(.25,.46,.45,.94) both;
+      animation: cardSlideIn .45s cubic-bezier(.2,.8,.2,1) both;
       opacity: 0;
     }
     @keyframes cardSlideIn {
-      from { opacity:0; transform:translateY(18px); }
-      to   { opacity:1; transform:translateY(0);    }
+      from { opacity:0; transform:translateY(20px) scale(.98); }
+      to   { opacity:1; transform:translateY(0)    scale(1);   }
     }
 
     /* ── Skeleton loader ── */
     .skeleton {
       background: linear-gradient(
         90deg,
-        rgba(255,255,255,.04) 25%,
-        rgba(255,255,255,.09) 50%,
-        rgba(255,255,255,.04) 75%
+        rgba(255,255,255,.03) 25%,
+        rgba(255,255,255,.08) 50%,
+        rgba(255,255,255,.03) 75%
       );
       background-size: 200% 100%;
-      animation: skeletonPulse 1.6s ease infinite;
+      animation: skeletonPulse 1.8s ease infinite;
     }
     @keyframes skeletonPulse {
       0%   { background-position: 200% 0; }
@@ -133,58 +137,70 @@
 
     /* ── Pulso del próximo servicio ── */
     .pulse-dot {
-      animation: pulseGlow 2s ease-in-out infinite;
+      animation: pulseGlow 2.5s cubic-bezier(.4,0,.6,1) infinite;
     }
     @keyframes pulseGlow {
-      0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(201,168,76,.6); }
-      50%     { opacity:.5; box-shadow:0 0 0 6px rgba(201,168,76,0); }
+      0%,100% { opacity:1;   box-shadow:0 0 0 0   rgba(232,70,37,.55); }
+      50%     { opacity:.55; box-shadow:0 0 0 8px rgba(232,70,37,0);   }
     }
 
     /* ── Badge del próximo ── */
     .badge-proximo {
-      animation: badgePulse 3s ease infinite;
+      animation: badgePulse 3s cubic-bezier(.4,0,.6,1) infinite;
     }
     @keyframes badgePulse {
-      0%,100% { box-shadow:0 0 0 0 rgba(201,168,76,.4); }
-      50%     { box-shadow:0 0 0 6px rgba(201,168,76,0); }
+      0%,100% { box-shadow:0 0 0 0   rgba(232,70,37,.42); }
+      50%     { box-shadow:0 0 0 6px rgba(232,70,37,0);   }
     }
 
     /* ── Banner de instalación ── */
-    #install-banner { animation: slideUp .45s cubic-bezier(.25,.46,.45,.94) both; }
+    #install-banner { animation: slideUp .5s cubic-bezier(.2,.8,.2,1) both; }
     @keyframes slideUp {
       from { transform:translateY(100%); opacity:0; }
       to   { transform:translateY(0);   opacity:1; }
     }
 
     /* ── Touch feedback en tarjetas ── */
-    .touch-feedback { transition: transform .15s, box-shadow .15s; }
-    .touch-feedback:active { transform: scale(.978); }
+    .touch-feedback { transition: transform .18s cubic-bezier(.4,0,.2,1), box-shadow .18s ease; }
+    .touch-feedback:active { transform: scale(.97); }
+    @media (hover: hover) {
+      .touch-feedback:hover { box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+    }
 
     /* ── Scrollbar personalizado ── */
-    ::-webkit-scrollbar        { width:3px; }
+    ::-webkit-scrollbar        { width:4px; height:4px; }
     ::-webkit-scrollbar-track  { background:transparent; }
-    ::-webkit-scrollbar-thumb  { background:rgba(255,255,255,.15); border-radius:2px; }
+    ::-webkit-scrollbar-thumb  { background:rgba(255,255,255,.15); border-radius:10px; }
+    ::-webkit-scrollbar-thumb:hover { background:rgba(255,255,255,.25); }
 
-    /* Ocultar scrollbar en filtros horizontales */
-    .noscroll               { scrollbar-width:none; }
+    .noscroll               { scrollbar-width:none; -ms-overflow-style:none; }
     .noscroll::-webkit-scrollbar { display:none; }
 
-    .transition-smooth { transition: all .28s cubic-bezier(.4,0,.2,1); }
+    .transition-smooth { transition: all .3s cubic-bezier(.4,0,.2,1); }
 
     /* ── Select glassmorphism ── */
     .select-glass {
-      background: rgba(255,255,255,.07);
+      background: rgba(255,255,255,.05);
       border: 1px solid rgba(255,255,255,.12);
+      border-top: 1px solid rgba(255,255,255,.20);
       outline: none;
-      transition: border-color .2s, background .2s;
+      transition: all .3s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .select-glass:hover {
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.20);
     }
     .select-glass:focus {
-      background: rgba(255,255,255,.10);
-      border-color: rgba(201,168,76,.45);
+      background: rgba(255,255,255,.11);
+      border-color: var(--acento);
+      box-shadow: 0 0 0 3px rgba(232,70,37,.22);
     }
     .select-glass option {
-      background: #1B3A2A;
+      background: #081430;
       color: white;
+      font-weight: 500;
     }
   </style>
 </head>
@@ -200,7 +216,7 @@
       <!-- Logo + nombre -->
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0"
-             style="background:linear-gradient(135deg,#C9A84C,#8B1A0A)">
+             style="background:linear-gradient(135deg,#E84625,#0D1F46)">
           <!-- Ícono de bus (Heroicons) -->
           <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -267,9 +283,9 @@
         <!-- Badge de búsqueda activa -->
         <div id="od-badge"
              class="hidden flex items-center gap-1.5 rounded-full px-3 py-1.5"
-             style="background:rgba(201,168,76,.2);border:1px solid rgba(201,168,76,.35)">
-          <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#C9A84C"></span>
-          <span id="od-badge-texto" class="text-[11px] font-semibold" style="color:#D4BA6A"></span>
+             style="background:rgba(232,70,37,.18);border:1px solid rgba(232,70,37,.38)">
+          <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#E84625"></span>
+          <span id="od-badge-texto" class="text-[11px] font-semibold" style="color:#FF7050"></span>
         </div>
       </div>
 
@@ -432,7 +448,7 @@
         </div>
         <!-- Kenia -->
         <div class="rounded-2xl p-3" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2)">
-          <p class="text-sm font-bold" style="color:#F87171">🔴 Kenia</p>
+          <p class="text-sm font-bold" style="color:#F87171">🔴 Kenya</p>
           <p class="text-[11px] text-white/40 mt-0.5">Interurbano</p>
         </div>
         <!-- Empresa Piñalito Norte -->
@@ -472,7 +488,7 @@
 
       <!-- Ícono -->
       <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"
-           style="background:linear-gradient(135deg,#C9A84C,#8B1A0A)">
+           style="background:linear-gradient(135deg,#E84625,#0D1F46)">
         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round"
                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -489,7 +505,7 @@
       <div class="flex items-center gap-2 flex-shrink-0">
         <button id="btn-instalar"
                 class="text-xs font-bold px-4 py-2 rounded-xl touch-feedback transition-smooth"
-                style="background:#C9A84C;color:#0F2B1A">
+                style="background:#E84625;color:#FFFFFF">
           Instalar
         </button>
         <button id="btn-cerrar-banner"

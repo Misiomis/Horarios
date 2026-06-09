@@ -363,7 +363,7 @@ function renderizarProximoServicio() {
           <span class="text-sm font-semibold" style="color:${empresa.color}">${empresa.icono} ${empresa.nombre}</span>
           ${s.numero ? `<span class="text-xs px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}22;color:${empresa.color};border:1px solid ${empresa.color}44">N° ${s.numero}</span>` : ''}
           ${s.servicio ? `<span class="text-xs px-2 py-0.5 rounded-full" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1)">${s.servicio}</span>` : ''}
-          <span class="badge-proximo text-xs px-3 py-1 rounded-full font-bold border" style="background:rgba(201,168,76,.2);color:#D4BA6A;border-color:rgba(201,168,76,.4)">⚡ ${tiempoRestante}</span>
+          <span class="badge-proximo text-xs px-3 py-1 rounded-full font-bold border" style="background:rgba(232,70,37,.20);color:#FF7050;border-color:rgba(232,70,37,.45)">⚡ ${tiempoRestante}</span>
         </div>
         <div class="flex items-center gap-3 mb-1">
           <span class="text-5xl font-black tracking-tight leading-none">${proximoItem.hora}</span>
@@ -377,7 +377,7 @@ function renderizarProximoServicio() {
       </div>
       <div class="flex-shrink-0 flex flex-col items-end gap-2">
         <div class="flex items-center gap-1.5">
-          <span class="pulse-dot w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
+          <span class="pulse-dot w-2 h-2 rounded-full inline-block" style="background:#E84625"></span>
           <span class="text-xs text-white/35">En vivo</span>
         </div>
         ${!s.dias.includes('domingo') ? `<span class="text-[10px] text-amber-400/60 text-right">No opera<br>domingos</span>` : ''}
@@ -463,7 +463,7 @@ function crearTarjeta(servicio, hora, index) {
   if (!esArea) {
     if (esPasado)     badgeEstado = `<span style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.3)" class="text-[10px] px-2 py-0.5 rounded-full">${esLlegada ? 'Ya llegó' : 'Partió'}</span>`;
     else if (esInminente) badgeEstado = `<span style="background:rgba(239,68,68,.2);color:#FCA5A5;border:1px solid rgba(239,68,68,.3)" class="text-[10px] px-2 py-0.5 rounded-full font-bold animate-pulse">${esLlegada ? '¡Llega ya!' : '¡Sale ya!'}</span>`;
-    else if (esCercano)   badgeEstado = `<span style="background:rgba(201,168,76,.15);color:#D4BA6A;border:1px solid rgba(201,168,76,.3)" class="text-[10px] px-2 py-0.5 rounded-full">${esLlegada ? `llega en ${diff} min` : `en ${diff} min`}</span>`;
+    else if (esCercano)   badgeEstado = `<span style="background:rgba(232,70,37,.15);color:#FF7050;border:1px solid rgba(232,70,37,.32)" class="text-[10px] px-2 py-0.5 rounded-full">${esLlegada ? `llega en ${diff} min` : `en ${diff} min`}</span>`;
   }
 
   let duracion = '';
@@ -535,6 +535,16 @@ function crearTarjeta(servicio, hora, index) {
           </svg>
           No opera los domingos desde Andresito
         </p>
+      </div>` : ''}
+
+    ${servicio.notas ? `
+      <div class="mt-2 pt-2 border-t border-white/[0.05]">
+        <p class="text-[11px] flex items-center gap-1.5" style="color:rgba(232,70,37,.75)">
+          <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          ${servicio.notas}
+        </p>
       </div>` : ''}`;
 
   return div;
@@ -556,7 +566,7 @@ function crearTarjetaOD(resultado, index) {
   let badge = '';
   if (esPasado)     badge = `<span style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.3)" class="text-[10px] px-2 py-0.5 rounded-full">Partió</span>`;
   else if (esInminente) badge = `<span style="background:rgba(239,68,68,.2);color:#FCA5A5;border:1px solid rgba(239,68,68,.3)" class="text-[10px] px-2 py-0.5 rounded-full font-bold animate-pulse">¡Sale ya!</span>`;
-  else if (esCercano)   badge = `<span style="background:rgba(201,168,76,.15);color:#D4BA6A;border:1px solid rgba(201,168,76,.3)" class="text-[10px] px-2 py-0.5 rounded-full">en ${diff} min</span>`;
+  else if (esCercano)   badge = `<span style="background:rgba(232,70,37,.15);color:#FF7050;border:1px solid rgba(232,70,37,.32)" class="text-[10px] px-2 py-0.5 rounded-full">en ${diff} min</span>`;
 
   /* Duración del tramo */
   let durTramo = '';
