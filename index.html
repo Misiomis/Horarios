@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Consulta de horarios de colectivos de Comandante Andresito, Misiones. Kruse, Expreso de la Selva, Sol del Norte, Kenya, Piñalito Norte, Itatí.">
-  <meta name="theme-color" content="#111111">
+  <meta name="theme-color" content="#153C35">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Andresito Bus">
   <meta name="mobile-web-app-capable" content="yes">
   <meta property="og:title" content="Horarios de Colectivos — Andresito">
-  <meta property="og:description" content="Consultá en tiempo real los horarios de colectivos desde Comandante Andresito, Misiones.">
+  <meta property="og:description" content="Consultá los horarios de colectivos desde Comandante Andresito, Misiones.">
   <meta property="og:type" content="website">
   <meta name="color-scheme" content="light">
 
@@ -20,357 +20,273 @@
 
   <title>Horarios Andresito · Colectivos</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
-
+  <link rel="preload" href="fonts/BarlowSemiCondensed-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="font-sans antialiased" style="background:var(--bg)">
+<body>
+  <a class="skip-link" href="#seccion-horarios">Ir a los horarios</a>
 
-  <!-- ══ HEADER ══ -->
-  <header class="site-header px-4 py-3">
-    <div class="max-w-lg mx-auto flex items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <!-- Bus logo in coral-orange gradient square -->
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-             style="background:linear-gradient(135deg,#FF4C1A 0%,#FF7240 100%);box-shadow:0 2px 8px rgba(255,76,26,.40)">
-          <svg viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:20px">
-            <rect x="1" y="6" width="34" height="16" rx="4" fill="white"/>
-            <rect x="4" y="3" width="28" height="5" rx="2" fill="white" opacity=".6"/>
-            <rect x="3" y="8" width="7" height="6" rx="1.5" fill="#FF4C1A" opacity=".35"/>
-            <rect x="12" y="8" width="5" height="6" rx="1.5" fill="#FF4C1A" opacity=".35"/>
-            <rect x="19" y="8" width="5" height="6" rx="1.5" fill="#FF4C1A" opacity=".35"/>
-            <rect x="26" y="8" width="7" height="6" rx="1.5" fill="#FF4C1A" opacity=".35"/>
-            <rect x="13" y="15" width="5" height="7" rx="1" fill="#FF4C1A" opacity=".25"/>
-            <circle cx="8" cy="25" r="3.5" fill="white"/><circle cx="8" cy="25" r="1.8" fill="#FF4C1A" opacity=".4"/>
-            <circle cx="28" cy="25" r="3.5" fill="white"/><circle cx="28" cy="25" r="1.8" fill="#FF4C1A" opacity=".4"/>
-            <circle cx="2.5" cy="14" r="1.5" fill="#FF4C1A" opacity=".7"/>
+  <!-- ══ ENCABEZADO ══ -->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="28" height="28">
+            <rect x="5" y="3" width="22" height="23" rx="5" fill="#F5F2EB"/>
+            <rect x="10" y="5.5" width="12" height="2" rx="1" fill="#B94A2D"/>
+            <rect x="8" y="9.5" width="16" height="7.5" rx="2" fill="#153C35"/>
+            <circle cx="10.5" cy="21.5" r="1.9" fill="#B94A2D"/>
+            <circle cx="21.5" cy="21.5" r="1.9" fill="#B94A2D"/>
+            <rect x="7.5" y="26" width="4.5" height="3.5" rx="1.2" fill="#F5F2EB"/>
+            <rect x="20" y="26" width="4.5" height="3.5" rx="1.2" fill="#F5F2EB"/>
           </svg>
-        </div>
-        <div>
-          <h1 class="app-title leading-tight" style="font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;color:white">Andresito Bus</h1>
-          <p class="app-subtitle" style="font-size:11px;color:rgba(255,255,255,.45)">Cdte. Andresito · Misiones</p>
+        </span>
+        <div class="brand-text">
+          <h1 class="brand-name">Andresito Bus</h1>
+          <p class="brand-place">
+            <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 0114 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            Cdte. Andresito · Misiones
+          </p>
         </div>
       </div>
-      <div class="text-right flex-shrink-0">
-        <p id="reloj" class="text-2xl font-black tracking-tight leading-none text-white" style="font-family:'Outfit',sans-serif">--:--</p>
-        <p id="reloj-fecha" class="text-[11px] mt-0.5 capitalize" style="color:rgba(255,255,255,.42)"></p>
+      <div class="clock" aria-label="Hora actual">
+        <p id="reloj" class="clock-time num">--:--</p>
+        <p id="reloj-fecha" class="clock-date"></p>
       </div>
     </div>
   </header>
 
-  <!-- ══ AVISO BANNER ══ -->
-  <div id="aviso-banner" class="hidden"></div>
+  <!-- ══ AVISOS ══ -->
+  <div id="aviso-banner" class="hidden" aria-label="Avisos del servicio"></div>
 
-
-  <!-- ══ MAIN ══ -->
-  <main class="max-w-lg mx-auto px-4 pt-5 pb-32 space-y-4">
-
-    <!-- Banner del día -->
-    <section id="banner-dia" class="card p-5">
-      <div class="flex items-center justify-between gap-4">
-        <div class="flex-1 min-w-0">
-          <p class="text-[10px] font-semibold uppercase tracking-widest mb-1" style="color:var(--text-3)">
-            Horarios vigentes hoy
-          </p>
-          <h2 id="tipo-dia-texto" class="text-2xl font-black leading-tight" style="font-family:'Outfit',sans-serif;color:var(--text)">Cargando…</h2>
-          <p id="tipo-dia-desc"  class="text-xs mt-0.5" style="color:var(--text-2)"></p>
-          <p id="fecha-completa" class="text-xs mt-1 capitalize" style="color:var(--text-3)"></p>
-        </div>
-        <div id="icono-dia" class="text-4xl flex-shrink-0">🗓️</div>
-      </div>
-    </section>
-
-
-    <!-- Próximo servicio -->
-    <section id="seccion-proximo" class="hidden">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-1" style="color:var(--text-3)">
-        ⚡ Próximo en partir
-      </p>
-      <div id="proximo-card" class="card-next p-5 touch-feedback transition-smooth cursor-pointer"></div>
-    </section>
-
-
-    <!-- Buscador O/D -->
-    <section class="card p-5">
-      <div class="flex items-center justify-between mb-4">
+  <!-- ══ AVISO SIN CONEXIÓN ══ -->
+  <div id="aviso-offline" class="hidden">
+    <div class="wrap">
+      <div class="notice notice-info" role="status">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8.8a15 15 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0"/><circle cx="12" cy="19.5" r=".6"/><path d="M4 4l16 16"/></svg>
         <div>
-          <p class="text-[10px] font-semibold uppercase tracking-widest mb-0.5" style="color:var(--text-3)">
-            Buscador de rutas
-          </p>
-          <p class="text-sm font-semibold" style="color:var(--text-2)">¿A dónde vas?</p>
+          <p class="notice-title">Modo sin conexión activo</p>
+          <p class="notice-text">Mostrando datos guardados en tu dispositivo.</p>
         </div>
-        <div id="od-badge" class="hidden items-center gap-1.5 rounded-full px-3 py-1.5"
-             style="background:var(--accent-lt);border:1px solid rgba(255,76,26,.25)">
-          <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:var(--accent)"></span>
-          <span id="od-badge-texto" class="text-[11px] font-semibold" style="color:var(--accent)"></span>
-        </div>
-      </div>
-
-      <div class="flex flex-col gap-3">
-        <!-- Origen custom dropdown -->
-        <div>
-          <label class="text-[10px] font-semibold uppercase tracking-widest block mb-1.5 px-1" style="color:var(--text-3)">Origen</label>
-          <div id="select-origen" class="csd"></div>
-        </div>
-
-        <!-- Swap -->
-        <div class="flex items-center gap-3">
-          <div class="flex-1 h-px" style="background:var(--border)"></div>
-          <button id="btn-swap-od"
-                  class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 touch-feedback transition-smooth"
-                  style="background:white;border:1.5px solid var(--border)"
-                  aria-label="Intercambiar origen y destino">
-            <svg class="w-4 h-4" style="color:var(--text-2)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
-            </svg>
-          </button>
-          <div class="flex-1 h-px" style="background:var(--border)"></div>
-        </div>
-
-        <!-- Destino custom dropdown -->
-        <div>
-          <label class="text-[10px] font-semibold uppercase tracking-widest block mb-1.5 px-1" style="color:var(--text-3)">Destino</label>
-          <div id="select-destino" class="csd"></div>
-        </div>
-
-        <!-- Limpiar -->
-        <button id="btn-limpiar-od"
-                class="hidden w-full py-2.5 rounded-xl text-xs font-semibold touch-feedback transition-smooth"
-                style="background:#F9F8F6;border:1.5px solid var(--border);color:var(--text-2);font-family:inherit;cursor:pointer">
-          ✕ &nbsp;Limpiar búsqueda
-        </button>
-
-        <!-- Badge O/D activo -->
-        <div id="od-badge-inline" class="hidden items-center gap-2 rounded-xl px-3 py-2"
-             style="background:var(--accent-lt);border:1px solid rgba(255,76,26,.22)">
-          <span class="text-[11px] font-semibold" style="color:var(--accent)">Mostrando ruta:</span>
-          <span id="od-badge-ruta" class="text-[11px]" style="color:var(--text-2)"></span>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- Filtros destino -->
-    <section id="seccion-filtros-destino">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-1" style="color:var(--text-3)">
-        Filtrar por destino
-      </p>
-      <div id="filtros-destino" class="flex gap-2 overflow-x-auto noscroll pb-0.5 px-0.5"></div>
-    </section>
-
-
-    <!-- Filtros empresa -->
-    <section id="seccion-filtros-empresa">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-2.5 px-1" style="color:var(--text-3)">
-        Empresa
-      </p>
-      <div id="filtros-empresa" class="flex gap-2 overflow-x-auto noscroll pb-0.5 px-0.5"></div>
-    </section>
-
-
-    <!-- Listado de horarios -->
-    <section>
-      <div class="flex items-center justify-between mb-2.5 px-1">
-        <p class="text-[10px] font-semibold uppercase tracking-widest" style="color:var(--text-3)">
-          Horarios del día
-        </p>
-        <span id="contador-resultados" class="text-[11px]" style="color:var(--text-3)">—</span>
-      </div>
-
-      <div id="skeletons" class="space-y-3">
-        <div class="skeleton h-[88px]"></div>
-        <div class="skeleton h-[88px]" style="opacity:.8"></div>
-        <div class="skeleton h-[88px]" style="opacity:.6"></div>
-        <div class="skeleton h-[88px]" style="opacity:.4"></div>
-      </div>
-
-      <div id="horarios-container" class="space-y-3 hidden"></div>
-
-      <div id="estado-vacio" class="hidden">
-        <div class="card p-10 text-center">
-          <div class="text-5xl mb-4">🚌</div>
-          <p class="font-semibold" style="color:var(--text)">No hay servicios disponibles</p>
-          <p id="vacio-mensaje" class="text-sm mt-2" style="color:var(--text-2)">Probá con otro filtro o destino</p>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- Aviso offline -->
-    <div id="aviso-offline" class="hidden">
-      <div class="rounded-xl px-4 py-3 flex items-center gap-3"
-           style="background:#ECFDF5;border:1px solid #A7F3D0">
-        <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-             style="background:#D1FAE5">
-          <svg class="w-4 h-4" style="color:#059669" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-        </div>
-        <div>
-          <p class="text-xs font-semibold" style="color:#065F46">Modo sin conexión activo</p>
-          <p class="text-[11px]" style="color:var(--text-2)">Mostrando datos desde caché local</p>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Empresas operadoras — left-border legend style -->
-    <section class="card p-5">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-4" style="color:var(--text-3)">
-        Empresas operadoras
-      </p>
-      <div class="flex flex-col gap-2.5">
-
-        <div class="empresa-legend-item kruse rounded-xl p-3">
-          <p class="empresa-nombre" style="color:#7C3AED">🟣 Kruse</p>
-          <p class="empresa-desc">Larga distancia · cama y semicama</p>
-          <p class="empresa-nota">⚠️ Lunes a sábado (no domingos)</p>
-        </div>
-
-        <div class="empresa-legend-item expresoselva rounded-xl p-3">
-          <p class="empresa-nombre" style="color:#0284C7">🔵 Expreso de la Selva</p>
-          <p class="empresa-desc">Regional · larga distancia · todos los días</p>
-        </div>
-
-        <div class="empresa-legend-item soldelnorte rounded-xl p-3">
-          <p class="empresa-nombre" style="color:#D97706">🟡 Sol del Norte</p>
-          <p class="empresa-desc">Interurbano · todos los días</p>
-        </div>
-
-        <div class="empresa-legend-item kenia rounded-xl p-3">
-          <p class="empresa-nombre" style="color:#DC2626">🔴 Kenya</p>
-          <p class="empresa-desc">Interurbano · lunes a viernes</p>
-        </div>
-
-        <div class="empresa-legend-item pinalito rounded-xl p-3">
-          <p class="empresa-nombre" style="color:#059669">🟢 Empresa Piñalito Norte</p>
-          <p class="empresa-desc">Interurbano local · regional</p>
-        </div>
-
-        <div class="empresa-legend-item itati rounded-xl p-3">
-          <p class="empresa-nombre" style="color:#EA580C">🟠 Empresa Itatí</p>
-          <p class="empresa-desc">Ruta 24 · San Pedro · San Vicente · Integración</p>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- Compartir -->
-    <section class="card p-5">
-      <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-             style="background:var(--accent-lt)">
-          <svg class="w-5 h-5" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-          </svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm font-bold" style="color:var(--text)">¿Conocés vecinos de Andresito?</p>
-          <p class="text-xs mt-0.5" style="color:var(--text-2)">Compartí la app y ayudanos a llegar a más personas 🙌</p>
-        </div>
-        <button id="btn-compartir" class="btn-accent px-4 py-2 text-xs rounded-xl flex-shrink-0">
-          Compartir
-        </button>
-      </div>
-    </section>
-
-
-    <!-- Comentarios y reclamos -->
-    <section class="card p-5" id="seccion-comentarios">
-      <p class="text-[10px] font-semibold uppercase tracking-widest mb-1" style="color:var(--text-3)">
-        Comentarios y reclamos
-      </p>
-      <p class="text-sm font-bold mb-4" style="color:var(--text)">¿Encontraste un error o querés sugerir algo?</p>
-
-      <form id="form-comentario" class="flex flex-col gap-3" novalidate>
-        <div>
-          <label class="text-xs font-semibold block mb-1.5" style="color:var(--text-2)">
-            Nombre <span style="color:var(--accent)">*</span>
-          </label>
-          <input type="text" id="comentario-nombre" class="input-clean"
-                 placeholder="Tu nombre completo" required maxlength="80">
-        </div>
-
-        <div>
-          <label class="text-xs font-semibold block mb-1.5" style="color:var(--text-2)">
-            Motivo del reclamo <span style="color:var(--accent)">*</span>
-          </label>
-          <div id="select-motivo" class="csd"></div>
-        </div>
-
-        <div>
-          <label class="text-xs font-semibold block mb-1.5" style="color:var(--text-2)">
-            Comentario <span style="color:var(--accent)">*</span>
-          </label>
-          <textarea id="comentario-texto" class="input-clean"
-                    placeholder="Describí el problema o sugerencia con detalle…" required maxlength="600"></textarea>
-        </div>
-
-        <p id="form-error" class="text-xs hidden font-semibold" style="color:var(--accent)"></p>
-
-        <button type="submit" class="btn-accent py-3 text-sm w-full rounded-xl">
-          Enviar comentario
-        </button>
-      </form>
-
-      <div id="form-exito" class="hidden text-center py-4">
-        <p class="text-3xl mb-2">✅</p>
-        <p class="text-sm font-bold" style="color:#059669">¡Gracias por tu comentario!</p>
-        <p class="text-xs mt-1" style="color:var(--text-2)">Lo revisaremos a la brevedad.</p>
-      </div>
-    </section>
-
-
-    <!-- Footer -->
-    <footer class="text-center pt-2 pb-4 space-y-2">
-      <p class="text-xs font-bold" style="color:var(--text-2)">© Andresito 2026</p>
-      <p class="text-[11px]" style="color:var(--text-3)">
-        Los horarios se actualizan regularmente. Ante cualquier inconveniente, dejanos tus comentarios 👆
-      </p>
-    </footer>
-
-  </main>
-
-
-  <!-- ══ BANNER PWA ══ -->
-  <div id="install-banner" class="hidden fixed bottom-0 inset-x-0 p-4 z-50">
-    <div class="card p-4 max-w-lg mx-auto flex items-center gap-3 shadow-xl">
-      <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
-           style="background:linear-gradient(135deg,#FF4C1A 0%,#FF7240 100%);box-shadow:0 3px 10px rgba(255,76,26,.40)">
-        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-        </svg>
-      </div>
-      <div class="flex-1 min-w-0">
-        <p class="font-semibold text-sm leading-tight" style="color:var(--text);font-family:'Outfit',sans-serif">Instalá la app</p>
-        <p class="text-[11px] mt-0.5" style="color:var(--text-2)">Accedé sin internet desde tu pantalla de inicio</p>
-      </div>
-      <div class="flex items-center gap-2 flex-shrink-0">
-        <button id="btn-instalar" class="btn-accent text-xs px-4 py-2 rounded-xl">Instalar</button>
-        <button id="btn-cerrar-banner"
-                style="color:var(--text-3);background:none;border:none;cursor:pointer;font-size:20px;line-height:1;padding:0 4px"
-                aria-label="Cerrar">✕</button>
       </div>
     </div>
   </div>
 
+  <!-- ══ CONTENIDO ══ -->
+  <main class="wrap page">
+
+    <div class="layout">
+
+      <!-- Panel de consulta (columna lateral en escritorio) -->
+      <div class="col-side">
+
+        <!-- Día vigente -->
+        <section id="banner-dia" class="card day" aria-labelledby="tipo-dia-texto">
+          <div id="icono-dia" class="day-ico" aria-hidden="true"></div>
+          <div class="day-body">
+            <p class="label">Horarios vigentes hoy</p>
+            <h2 id="tipo-dia-texto" class="day-title">Cargando…</h2>
+            <p class="day-meta"><span id="tipo-dia-desc"></span> · <span id="fecha-completa"></span></p>
+          </div>
+        </section>
+
+        <!-- Buscador origen / destino -->
+        <section class="card search" aria-labelledby="buscador-titulo">
+          <div class="search-head">
+            <h2 id="buscador-titulo" class="card-title">¿A dónde vas?</h2>
+            <div id="od-badge" class="od-badge hidden" role="status">
+              <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+              <span class="sr-only">Búsqueda activa: </span><span id="od-badge-texto"></span>
+            </div>
+          </div>
+
+          <div class="od">
+            <div class="od-rail" aria-hidden="true"><span class="od-dot"></span><span class="od-line"></span><span class="od-pin"></span></div>
+            <div class="od-fields">
+              <div class="field">
+                <label id="label-origen" class="field-label">Salís desde</label>
+                <div id="select-origen" class="csd" data-labelled-by="label-origen"></div>
+              </div>
+              <div class="field">
+                <label id="label-destino" class="field-label">Llegás a</label>
+                <div id="select-destino" class="csd" data-labelled-by="label-destino"></div>
+              </div>
+            </div>
+            <button id="btn-swap-od" type="button" class="swap" aria-label="Intercambiar origen y destino">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16m0 0l-3.5-3.5M8 20l3.5-3.5M16 20V4m0 0l-3.5 3.5M16 4l3.5 3.5"/></svg>
+            </button>
+          </div>
+
+          <button id="btn-limpiar-od" type="button" class="btn btn-outline btn-block hidden">
+            <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            Limpiar búsqueda
+          </button>
+        </section>
+      </div>
+
+      <!-- Área principal -->
+      <div class="col-main">
+
+        <!-- Próxima salida -->
+        <section id="seccion-proximo" class="hidden" aria-labelledby="proximo-titulo">
+          <h2 id="proximo-titulo" class="label section-label">Próxima salida</h2>
+          <div id="proximo-card" class="next"></div>
+        </section>
+
+        <!-- Filtros -->
+        <section id="seccion-filtros-destino" class="filters" aria-labelledby="filtros-destino-titulo">
+          <h2 id="filtros-destino-titulo" class="label section-label">Filtrar por destino</h2>
+          <div id="filtros-destino" class="pills"></div>
+        </section>
+
+        <section id="seccion-filtros-empresa" class="filters" aria-labelledby="filtros-empresa-titulo">
+          <h2 id="filtros-empresa-titulo" class="label section-label">Empresa</h2>
+          <div id="filtros-empresa" class="pills"></div>
+        </section>
+
+        <!-- Listado de horarios -->
+        <section id="seccion-horarios" class="list-section" aria-labelledby="horarios-titulo">
+          <div class="list-head">
+            <h2 id="horarios-titulo" class="label section-label">Horarios del día</h2>
+            <span id="contador-resultados" class="count" aria-live="polite">—</span>
+          </div>
+
+          <div id="skeletons" class="stack" aria-hidden="true">
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+          </div>
+
+          <div id="horarios-container" class="stack hidden"></div>
+
+          <div id="estado-vacio" class="hidden">
+            <div class="card empty">
+              <svg class="ico empty-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="15" rx="3"/><path d="M4 11h16M7 18v2.5M17 18v2.5"/><circle cx="8" cy="14.5" r=".7"/><circle cx="16" cy="14.5" r=".7"/></svg>
+              <p class="empty-title">No hay servicios disponibles</p>
+              <p id="vacio-mensaje" class="empty-text">Probá con otro filtro o destino</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Zona secundaria -->
+    <div class="secondary">
+
+      <!-- Empresas operadoras -->
+      <section class="card pad sec-a" aria-labelledby="empresas-titulo">
+        <h2 id="empresas-titulo" class="label section-label">Empresas operadoras</h2>
+        <div class="legend">
+          <div class="legend-item" data-emp="kruse">
+            <p class="legend-name"><span class="dot" aria-hidden="true"></span>Kruse</p>
+            <p class="legend-desc">Larga distancia · cama y semicama</p>
+            <p class="legend-note"><svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4m0 3.5h.01M10.3 3.9L2.4 17.5a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Lunes a sábado (no domingos)</p>
+          </div>
+          <div class="legend-item" data-emp="expresoSelva">
+            <p class="legend-name"><span class="dot" aria-hidden="true"></span>Expreso de la Selva</p>
+            <p class="legend-desc">Regional · larga distancia · todos los días</p>
+          </div>
+          <div class="legend-item" data-emp="solDelNorte">
+            <p class="legend-name"><span class="dot" aria-hidden="true"></span>Sol del Norte</p>
+            <p class="legend-desc">Interurbano · todos los días</p>
+          </div>
+          <div class="legend-item" data-emp="kenia">
+            <p class="legend-name"><span class="dot" aria-hidden="true"></span>Kenya</p>
+            <p class="legend-desc">Interurbano · lunes a viernes</p>
+          </div>
+          <div class="legend-item" data-emp="pinalitoNorte">
+            <p class="legend-name"><span class="dot" aria-hidden="true"></span>Empresa Piñalito Norte</p>
+            <p class="legend-desc">Interurbano local · regional</p>
+          </div>
+          <div class="legend-item" data-emp="itati">
+            <p class="legend-name"><span class="dot" aria-hidden="true"></span>Empresa Itatí</p>
+            <p class="legend-desc">Ruta 24 · San Pedro · San Vicente · Integración</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="sec-b">
+        <!-- Compartir -->
+        <section class="card pad share" aria-labelledby="compartir-titulo">
+          <div class="share-ico" aria-hidden="true">
+            <svg class="ico ico-lg" viewBox="0 0 24 24"><circle cx="18" cy="5.5" r="2.7"/><circle cx="6" cy="12" r="2.7"/><circle cx="18" cy="18.5" r="2.7"/><path d="M8.4 10.7l7.2-3.9M8.4 13.3l7.2 3.9"/></svg>
+          </div>
+          <div class="share-body">
+            <h2 id="compartir-titulo" class="card-title">¿Conocés vecinos de Andresito?</h2>
+            <p class="share-text">Compartí la app y ayudanos a llegar a más personas.</p>
+          </div>
+          <button id="btn-compartir" type="button" class="btn btn-accent">Compartir</button>
+        </section>
+
+        <!-- Comentarios y reclamos -->
+        <section class="card pad" id="seccion-comentarios" aria-labelledby="comentarios-titulo">
+          <p class="label">Comentarios y reclamos</p>
+          <h2 id="comentarios-titulo" class="card-title form-title">¿Encontraste un error o querés sugerir algo?</h2>
+
+          <form id="form-comentario" class="form" novalidate>
+            <div class="field">
+              <label for="comentario-nombre" class="field-label">Nombre <span class="req" aria-hidden="true">*</span><span class="sr-only">(obligatorio)</span></label>
+              <input type="text" id="comentario-nombre" class="input-clean" placeholder="Tu nombre completo" required maxlength="80" autocomplete="name">
+            </div>
+
+            <div class="field">
+              <label id="label-motivo" class="field-label">Motivo del reclamo <span class="req" aria-hidden="true">*</span><span class="sr-only">(obligatorio)</span></label>
+              <div id="select-motivo" class="csd" data-labelled-by="label-motivo"></div>
+            </div>
+
+            <div class="field">
+              <label for="comentario-texto" class="field-label">Comentario <span class="req" aria-hidden="true">*</span><span class="sr-only">(obligatorio)</span></label>
+              <textarea id="comentario-texto" class="input-clean" placeholder="Describí el problema o sugerencia con detalle…" required maxlength="600"></textarea>
+            </div>
+
+            <p id="form-error" class="form-error hidden" role="alert"></p>
+
+            <button type="submit" class="btn btn-accent btn-block">
+              <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4 18-7z"/></svg>
+              Enviar comentario
+            </button>
+          </form>
+
+          <div id="form-exito" class="form-ok hidden" role="status">
+            <svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></svg>
+            <div>
+              <p class="form-ok-title">¡Gracias por tu comentario!</p>
+              <p class="form-ok-text">Lo revisaremos a la brevedad.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p class="footer-copy">© Andresito 2026</p>
+      <p class="footer-text">Los horarios se actualizan regularmente. Ante cualquier inconveniente, dejanos tus comentarios en el formulario.</p>
+    </footer>
+
+  </main>
+
+  <!-- ══ BANNER PWA (queda en el flujo al final de la página; no tapa contenido) ══ -->
+  <div id="install-banner" class="hidden install" role="region" aria-label="Instalar la aplicación">
+    <div class="wrap install-inner">
+      <span class="install-mark" aria-hidden="true">
+        <svg class="ico ico-lg" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
+      </span>
+      <div class="install-text">
+        <p class="install-title">Instalá la app</p>
+        <p class="install-sub">Consultá los horarios sin internet desde tu pantalla de inicio.</p>
+      </div>
+      <div class="install-actions">
+        <button id="btn-instalar" type="button" class="btn btn-accent">Instalar</button>
+        <button id="btn-cerrar-banner" type="button" class="btn btn-outline btn-icon" aria-label="Cerrar">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="data.js"></script>
   <script src="app.js"></script>

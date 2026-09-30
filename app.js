@@ -18,6 +18,27 @@ const estado = {
   dropdownMotivo:  null       // CustomDropdown instance
 };
 
+/* ─── Iconos SVG (mismo trazo y tamaño; solo presentación) ─── */
+const ICON_PATHS = {
+  salida:   '<path d="M7 17L17 7M9 7h8v8"/>',
+  flecha:   '<path d="M5 12h14m-5-5l5 5-5 5"/>',
+  llegada:  '<path d="M17 7L7 17M15 17H7V9"/>',
+  area:     '<circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h5a3 3 0 010 6H11a3 3 0 000 6h5"/>',
+  reloj:    '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  check:    '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>',
+  paradas:  '<circle cx="6" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M6 8v3a3 3 0 003 3h6a3 3 0 013 3"/>',
+  alerta:   '<path d="M12 9v4m0 3.5h.01M10.3 3.9L2.4 17.5a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>',
+  info:     '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/>',
+  paro:     '<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
+  calendario: '<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  enlace:   '<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3A4 4 0 0011 18.7l1-1"/>',
+  refrescar: '<path d="M20 11a8 8 0 00-14.5-3.5L4 9M4 4v5h5M4 13a8 8 0 0014.5 3.5L20 15M20 20v-5h-5"/>',
+  chevron:  '<path d="M6 9l6 6 6-6"/>'
+};
+function icono(nombre, clase = 'ico ico-sm') {
+  return `<svg class="${clase}" viewBox="0 0 24 24" aria-hidden="true">${ICON_PATHS[nombre] || ''}</svg>`;
+}
+
 /* ════════════════════════════════════════════
    CUSTOM DROPDOWN CLASS
    ════════════════════════════════════════════ */
@@ -53,6 +74,8 @@ class CustomDropdown {
     this._trigger.className = 'csd-trigger';
     this._trigger.setAttribute('aria-haspopup', 'listbox');
     this._trigger.setAttribute('aria-expanded', 'false');
+    const labelId = this._container.dataset.labelledBy;
+    if (labelId) this._trigger.setAttribute('aria-labelledby', labelId);
 
     this._valueEl = document.createElement('span');
     this._valueEl.className = 'csd-value placeholder';
@@ -60,7 +83,7 @@ class CustomDropdown {
 
     const arrow = document.createElement('span');
     arrow.className = 'csd-arrow';
-    arrow.innerHTML = `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>`;
+    arrow.innerHTML = icono('chevron', 'ico');
 
     this._trigger.appendChild(this._valueEl);
     this._trigger.appendChild(arrow);
@@ -78,6 +101,7 @@ class CustomDropdown {
       this._searchInput.type = 'text';
       this._searchInput.placeholder = 'Buscar parada…';
       this._searchInput.autocomplete = 'off';
+      this._searchInput.setAttribute('aria-label', 'Buscar parada');
       searchWrap.appendChild(this._searchInput);
       this._panel.appendChild(searchWrap);
     }
@@ -160,6 +184,7 @@ class CustomDropdown {
       }
     } else if (e.key === 'Escape') {
       this._close();
+      this._trigger.focus();   // el foco vuelve al botón (el panel desaparece)
     }
   }
 
@@ -206,6 +231,7 @@ class CustomDropdown {
       const opt = document.createElement('div');
       opt.className = 'csd-opt';
       opt.setAttribute('role', 'option');
+      opt.setAttribute('aria-selected', item.value === this._value ? 'true' : 'false');
       opt.textContent = item.label;
       opt.dataset.value = item.value;
       if (item.value === this._value) opt.classList.add('selected');
@@ -235,6 +261,7 @@ class CustomDropdown {
     // Update selected state in list
     this._list.querySelectorAll('.csd-opt').forEach(o => {
       o.classList.toggle('selected', o.dataset.value === val);
+      o.setAttribute('aria-selected', o.dataset.value === val ? 'true' : 'false');
     });
 
     if (val !== prev) {
@@ -339,17 +366,23 @@ function renderAvisos(avisos) {
   const banner = document.getElementById('aviso-banner');
   if (!banner) return;
 
-  const tipoIcono = { paro: '🚫', info: 'ℹ️', warning: '⚠️', success: '✅' };
+  const tipoEtiqueta = { paro: 'Paro', info: 'Información', warning: 'Advertencia', success: 'Buenas noticias' };
+  const tipoIcono    = { paro: 'paro', info: 'info', warning: 'alerta', success: 'check' };
 
-  banner.innerHTML = activos.map(a => `
-    <div class="aviso-banner tipo-${a.tipo || 'info'}">
-      <div class="aviso-icon">${tipoIcono[a.tipo] || 'ℹ️'}</div>
-      <div class="aviso-body">
-        <p class="aviso-title">${escHTML(a.titulo || '')}</p>
-        ${a.mensaje ? `<p class="aviso-msg">${escHTML(a.mensaje)}</p>` : ''}
+  banner.innerHTML = activos.map(a => {
+    const t = tipoEtiqueta[a.tipo] ? a.tipo : 'info';
+    return `
+    <div class="aviso-banner tipo-${t}" role="${t === 'paro' ? 'alert' : 'status'}">
+      <div class="wrap aviso-inner">
+        <span class="aviso-icon">${icono(tipoIcono[t], 'ico')}</span>
+        <div class="aviso-body">
+          <p class="aviso-kind">${tipoEtiqueta[t]}</p>
+          <p class="aviso-title">${escHTML(a.titulo || '')}</p>
+          ${a.mensaje ? `<p class="aviso-msg">${escHTML(a.mensaje)}</p>` : ''}
+        </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
   banner.classList.remove('hidden');
   banner.style.display = 'block';
@@ -427,17 +460,19 @@ function inicializarDia() {
   }
 
   const conf = {
-    lv:      { texto: 'Lunes a Viernes',                 icono: '💼', clase: 'text-emerald-700', desc: 'Horario completo' },
-    sabado:  { texto: 'Sábado',                          icono: '🌤️', clase: 'text-amber-600',  desc: 'Horario reducido' },
-    domingo: { texto: esFeriado ? 'Feriado' : 'Domingo', icono: esFeriado ? '🎌' : '☀️', clase: 'text-orange-600', desc: 'Horario especial' }
+    lv:      { texto: 'Lunes a Viernes',                 desc: 'Horario completo' },
+    sabado:  { texto: 'Sábado',                          desc: 'Horario reducido' },
+    domingo: { texto: esFeriado ? 'Feriado' : 'Domingo', desc: 'Horario especial' }
   }[estado.tipoDia];
 
   const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  document.getElementById('tipo-dia-texto').textContent = conf.texto;
-  document.getElementById('tipo-dia-texto').className   = `text-2xl font-black ${conf.clase}`;
+  const titulo = document.getElementById('tipo-dia-texto');
+  titulo.textContent = conf.texto;
+  titulo.dataset.tipo = estado.tipoDia;
   document.getElementById('tipo-dia-desc').textContent  = conf.desc;
-  document.getElementById('fecha-completa').textContent = ahora.toLocaleDateString('es-AR', opts);
-  document.getElementById('icono-dia').textContent      = conf.icono;
+  const fechaLarga = ahora.toLocaleDateString('es-AR', opts);
+  document.getElementById('fecha-completa').textContent = fechaLarga.charAt(0).toUpperCase() + fechaLarga.slice(1);
+  document.getElementById('icono-dia').innerHTML        = icono('calendario', 'ico ico-lg');
 }
 
 /* ════════════════════════════════════════════
@@ -448,18 +483,28 @@ function inicializarFiltros() {
   construirFiltrosEmpresa();
 }
 
+function marcarPillActiva(contenedor, pill) {
+  contenedor.querySelectorAll('.filter-pill').forEach(p => {
+    p.classList.remove('active');
+    p.setAttribute('aria-pressed', 'false');
+  });
+  pill.classList.add('active');
+  pill.setAttribute('aria-pressed', 'true');
+}
+
 function construirFiltrosDestino() {
   const c = document.getElementById('filtros-destino');
   c.innerHTML = '';
   APP_DATA.destinos.forEach(dest => {
     const btn = document.createElement('button');
-    btn.className   = `filter-pill flex-shrink-0 px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap ${dest.id === estado.filtroDestino ? 'active' : ''}`;
-    btn.innerHTML   = `${dest.emoji} ${dest.label}`;
+    btn.type        = 'button';
+    btn.className   = `filter-pill${dest.id === estado.filtroDestino ? ' active' : ''}`;
+    btn.textContent = dest.label;
     btn.dataset.val = dest.id;
+    btn.setAttribute('aria-pressed', dest.id === estado.filtroDestino ? 'true' : 'false');
     btn.addEventListener('click', () => {
       estado.filtroDestino = dest.id;
-      c.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
+      marcarPillActiva(c, btn);
       renderizarHorarios();
       renderizarProximoServicio();
     });
@@ -470,28 +515,36 @@ function construirFiltrosDestino() {
 function construirFiltrosEmpresa() {
   const c = document.getElementById('filtros-empresa');
   c.innerHTML = '';
-  const todas = crearPillEmpresa('todas', '🏢 Todas', estado.filtroEmpresa === 'todas');
+  const todas = crearPillEmpresa('todas', 'Todas', estado.filtroEmpresa === 'todas');
   todas.addEventListener('click', () => cambiarFiltroEmpresa('todas', c));
   c.appendChild(todas);
   Object.values(APP_DATA.empresas).forEach(emp => {
-    const pill = crearPillEmpresa(emp.id, `${emp.icono} ${emp.nombre}`, estado.filtroEmpresa === emp.id);
+    const pill = crearPillEmpresa(emp.id, emp.nombre, estado.filtroEmpresa === emp.id, emp.color);
     pill.addEventListener('click', () => cambiarFiltroEmpresa(emp.id, c));
     c.appendChild(pill);
   });
 }
 
-function crearPillEmpresa(id, label, activo) {
+function crearPillEmpresa(id, label, activo, color) {
   const btn = document.createElement('button');
-  btn.className   = `filter-pill flex-shrink-0 px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap ${activo ? 'active' : ''}`;
-  btn.textContent = label;
+  btn.type      = 'button';
+  btn.className = `filter-pill${activo ? ' active' : ''}`;
+  btn.setAttribute('aria-pressed', activo ? 'true' : 'false');
+  if (color) {
+    const dot = document.createElement('span');
+    dot.className = 'dot';
+    dot.style.setProperty('--emp-raw', color);
+    dot.setAttribute('aria-hidden', 'true');
+    btn.appendChild(dot);
+  }
+  btn.appendChild(document.createTextNode(label));
   btn.dataset.val = id;
   return btn;
 }
 
 function cambiarFiltroEmpresa(id, c) {
   estado.filtroEmpresa = id;
-  c.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-  c.querySelector(`[data-val="${id}"]`).classList.add('active');
+  marcarPillActiva(c, c.querySelector(`[data-val="${id}"]`));
   renderizarHorarios();
   renderizarProximoServicio();
 }
@@ -545,8 +598,8 @@ function inicializarBuscadorOD() {
   const optsArr = stops.map(s => ({ value: s, label: s }));
 
   // Create instances
-  estado.dropdownOrigen  = new CustomDropdown('select-origen',  { placeholder: 'Seleccionar origen…',  searchable: true });
-  estado.dropdownDestino = new CustomDropdown('select-destino', { placeholder: 'Seleccionar destino…', searchable: true });
+  estado.dropdownOrigen  = new CustomDropdown('select-origen',  { placeholder: 'Elegí dónde salís…',  searchable: true });
+  estado.dropdownDestino = new CustomDropdown('select-destino', { placeholder: 'Elegí a dónde llegás…', searchable: true });
 
   estado.dropdownOrigen.setOptions(optsArr);
   estado.dropdownDestino.setOptions(optsArr);
@@ -676,9 +729,7 @@ function renderizarApp() {
   ['seccion-filtros-destino', 'seccion-filtros-empresa'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    odActivo
-      ? el.classList.add('opacity-40', 'pointer-events-none')
-      : el.classList.remove('opacity-40', 'pointer-events-none');
+    el.classList.toggle('is-muted', odActivo);
   });
 
   actualizarBadgeOD(odActivo);
@@ -720,33 +771,29 @@ function renderizarProximoServicio() {
     ? s.paradas.slice(0, 4).join(' · ') + (s.paradas.length > 4 ? ` +${s.paradas.length - 4}` : '')
     : '';
 
+  card.dataset.emp = s.empresa;
+  card.style.setProperty('--emp-raw', empresa.color);
   card.innerHTML = `
-    <div class="flex items-start justify-between gap-3">
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-2 flex-wrap mb-3">
-          <span class="text-sm font-semibold" style="color:${empresa.color}">${empresa.icono} ${empresa.nombre}</span>
-          ${s.numero ? `<span class="text-xs px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}18;color:${empresa.color};border:1px solid ${empresa.color}40">N° ${s.numero}</span>` : ''}
-          ${s.servicio ? `<span class="text-xs px-2 py-0.5 rounded-full" style="background:#F5F4F1;color:var(--text-2);border:1px solid var(--border)">${s.servicio}</span>` : ''}
-          <span class="badge-proximo text-xs px-3 py-1 rounded-full font-bold" style="background:rgba(255,76,26,.12);color:#FF4C1A;border:1px solid rgba(255,76,26,.30)">⚡ ${tiempoRestante}</span>
-        </div>
-        <div class="flex items-center gap-3 mb-1">
-          <span class="text-5xl font-black tracking-tight leading-none" style="font-family:'Outfit',sans-serif;color:var(--text)">${proximoItem.hora}</span>
-          <div class="min-w-0">
-            <p class="font-bold text-lg leading-tight truncate" style="color:var(--text)">${s.destino}</p>
-            ${s.llegada ? `<p class="text-xs mt-0.5" style="color:var(--text-2)">→ llega ${s.llegada}${durStr ? ' · ' + durStr : ''}</p>` : ''}
-            ${s.categoria !== 'Servicio regular' ? `<p class="text-xs mt-0.5 font-semibold" style="color:${empresa.color}">${s.categoria}</p>` : ''}
-          </div>
-        </div>
-        ${paradasStr ? `<p class="text-xs mt-2 flex items-center gap-1.5" style="color:var(--text-3)"><svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>${paradasStr}</p>` : ''}
+    <div class="next-top">
+      <span class="next-chip">${icono('reloj')} Según horario</span>
+      <span class="next-count">${tiempoRestante}</span>
+    </div>
+    <div class="next-main">
+      <span class="next-time num">${proximoItem.hora}</span>
+      <div class="next-dest">
+        <p class="next-destino">${s.destino}</p>
+        ${s.llegada ? `<p class="next-sub">Llega ${s.llegada}${durStr ? ' · ' + durStr : ''}</p>` : ''}
       </div>
-      <div class="flex-shrink-0 flex flex-col items-end gap-2">
-        <div class="flex items-center gap-1.5">
-          <span class="pulse-dot w-2 h-2 rounded-full inline-block" style="background:#FF4C1A"></span>
-          <span class="text-xs" style="color:var(--text-3)">En vivo</span>
-        </div>
-        ${!s.dias.includes('domingo') ? `<span class="text-[10px] text-right" style="color:#D97706">No opera<br>domingos</span>` : ''}
-      </div>
-    </div>`;
+    </div>
+    <div class="next-meta">
+      <span class="badge badge-emp"><span class="dot" aria-hidden="true"></span>${empresa.nombre}</span>
+      <span class="badge badge-type">${icono('salida')}Salida</span>
+      ${s.numero ? `<span class="badge badge-num">N° ${s.numero}</span>` : ''}
+      ${s.servicio ? `<span class="badge badge-plain">${s.servicio}</span>` : ''}
+      ${s.categoria !== 'Servicio regular' ? `<span class="badge badge-cat">${s.categoria}</span>` : ''}
+      ${!s.dias.includes('domingo') ? `<span class="badge badge-warn">${icono('alerta')}No opera domingos</span>` : ''}
+    </div>
+    ${paradasStr ? `<p class="next-stops">${icono('paradas')}<span><span class="sr-only">Paradas: </span>${paradasStr}</span></p>` : ''}`;
 }
 
 /* ─── LISTA DE HORARIOS ─── */
@@ -807,6 +854,16 @@ function horaAMinutos(hora) {
    TARJETAS
    ════════════════════════════════════════════ */
 
+function badgeTiempo(clave, texto) {
+  if (clave === 'pasado')    return `<span class="badge badge-past">${icono('check')}${texto}</span>`;
+  if (clave === 'inminente') return `<span class="badge badge-now">${icono('reloj')}${texto}</span>`;
+  return `<span class="badge badge-soon">${icono('reloj')}${texto}</span>`;
+}
+
+function nota(tipo, icon, html) {
+  return `<p class="svc-note ${tipo}">${icono(icon)}<span>${html}</span></p>`;
+}
+
 function crearTarjeta(servicio, hora, index) {
   const empresa   = APP_DATA.empresas[servicio.empresa];
   const minActual = new Date().getHours() * 60 + new Date().getMinutes();
@@ -821,9 +878,9 @@ function crearTarjeta(servicio, hora, index) {
 
   let badgeEstado = '';
   if (!esArea) {
-    if (esPasado)         badgeEstado = `<span style="background:rgba(0,0,0,.05);color:var(--text-3)" class="text-[10px] px-2 py-0.5 rounded-full">${esLlegada ? 'Ya llegó' : 'Partió'}</span>`;
-    else if (esInminente) badgeEstado = `<span style="background:rgba(239,68,68,.2);color:#DC2626;border:1px solid rgba(239,68,68,.3)" class="text-[10px] px-2 py-0.5 rounded-full font-bold animate-pulse">${esLlegada ? '¡Llega ya!' : '¡Sale ya!'}</span>`;
-    else if (esCercano)   badgeEstado = `<span style="background:rgba(255,76,26,.14);color:#FF4C1A;border:1px solid rgba(255,76,26,.30)" class="text-[10px] px-2 py-0.5 rounded-full">${esLlegada ? `llega en ${diff} min` : `en ${diff} min`}</span>`;
+    if (esPasado)         badgeEstado = badgeTiempo('pasado',    esLlegada ? 'Ya llegó' : 'Partió');
+    else if (esInminente) badgeEstado = badgeTiempo('inminente', esLlegada ? '¡Llega ya!' : '¡Sale ya!');
+    else if (esCercano)   badgeEstado = badgeTiempo('cercano',   esLlegada ? `llega en ${diff} min` : `en ${diff} min`);
   }
 
   let duracion = '';
@@ -845,67 +902,48 @@ function crearTarjeta(servicio, hora, index) {
   else if (servicio.origen !== 'Cdte. Andresito') subtitulo = `Desde: ${servicio.origen}${duracion ? ' · ' + duracion : ''}`;
   else if (duracion)  subtitulo = duracion;
 
-  const div = document.createElement('div');
-  div.className = `card p-4 card-enter touch-feedback transition-smooth${esPasado ? ' opacity-40' : ''}`;
-  div.style.animationDelay = `${Math.min(index * 45, 600)}ms`;
+  const tipoBadge = esLlegada
+    ? `<span class="badge badge-type">${icono('llegada')}Llega a Andresito</span>`
+    : esArea
+      ? `<span class="badge badge-type">${icono('area')}Ruta de área</span>`
+      : `<span class="badge badge-type">${icono('salida')}Salida</span>`;
+
+  const div = document.createElement('article');
+  div.className = `svc card-enter${esPasado ? ' is-past' : ''}`;
+  div.dataset.servicioId = servicio.id;
+  div.dataset.emp = servicio.empresa;
+  div.style.setProperty('--emp-raw', empresa.color);
+
+  const notas = [
+    paradasText ? nota('', 'paradas', `<span class="sr-only">Paradas: </span>${paradasText}`) : '',
+    noDomingo   ? nota('warn', 'alerta', 'No opera los domingos desde Andresito') : '',
+    servicio.notas ? nota('info', 'info', servicio.notas) : ''
+  ].join('');
 
   div.innerHTML = `
-    <div class="flex items-center justify-between gap-2 mb-3">
-      <span class="text-sm font-semibold" style="color:${empresa.color}">${empresa.icono} ${empresa.nombre}</span>
-      <div class="flex items-center gap-1.5 flex-wrap justify-end">
-        ${servicio.numero ? `<span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}14;color:${empresa.color};border:1px solid ${empresa.color}38">N° ${servicio.numero}</span>` : ''}
-        ${servicio.servicio ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:#F5F4F1;color:var(--text-2);border:1px solid var(--border)">${servicio.servicio}</span>` : ''}
-        ${esLlegada ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE">🏠 Llega a Andresito</span>` : ''}
-        ${esArea    ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:#F5F4F1;color:var(--text-3);border:1px solid var(--border)">🗺️ Ruta de área</span>` : ''}
+    <div class="svc-head">
+      <span class="svc-emp"><span class="dot" aria-hidden="true"></span>${empresa.nombre}</span>
+      <div class="svc-tags">
+        ${tipoBadge}
+        ${servicio.numero ? `<span class="badge badge-num">N° ${servicio.numero}</span>` : ''}
+        ${servicio.servicio ? `<span class="badge">${servicio.servicio}</span>` : ''}
+        ${servicio.categoria !== 'Servicio regular' ? `<span class="badge badge-cat">${servicio.categoria}</span>` : ''}
       </div>
     </div>
 
-    <div class="flex items-center gap-3">
-      <div class="flex-shrink-0 min-w-[64px]">
-        <span class="text-3xl font-black leading-none" style="font-family:'Outfit',sans-serif;color:${esPasado ? 'var(--text-3)' : 'var(--text)'}">${hora}</span>
-        ${!esLlegada && servicio.llegada ? `<p class="text-[11px] mt-1 font-mono" style="color:var(--text-3)">→ ${servicio.llegada}</p>` : ''}
-        ${esLlegada  ? `<p class="text-[11px] mt-1" style="color:var(--text-3)">sale ${servicio.salida}</p>` : ''}
+    <div class="svc-main">
+      <div class="svc-time">
+        <span class="time num">${hora}</span>
+        ${!esLlegada && servicio.llegada ? `<span class="time-sub num">→ ${servicio.llegada}</span>` : ''}
+        ${esLlegada ? `<span class="time-sub">sale ${servicio.salida}</span>` : ''}
       </div>
-      <div class="w-px h-10 rounded-full flex-shrink-0" style="background:${empresa.color}50"></div>
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-2 flex-wrap">
-          <p class="font-bold" style="color:${esPasado ? 'var(--text-3)' : 'var(--text)'}">${esLlegada ? servicio.origen : servicio.destino}</p>
-          ${badgeEstado}
-        </div>
-        ${subtitulo ? `<p class="text-xs mt-0.5 leading-tight" style="color:var(--text-2)">${subtitulo}</p>` : ''}
-        ${servicio.categoria !== 'Servicio regular' ? `<p class="text-[11px] mt-0.5 font-semibold" style="color:${empresa.color}">${servicio.categoria}</p>` : ''}
+      <div class="svc-where">
+        <p class="svc-place">${esLlegada ? servicio.origen : servicio.destino}</p>
+        ${badgeEstado ? `<p class="svc-status">${badgeEstado}</p>` : ''}
+        ${subtitulo ? `<p class="svc-sub">${subtitulo}</p>` : ''}
       </div>
     </div>
-
-    ${paradasText ? `
-      <div class="mt-3 pt-3" style="border-top:1px solid var(--border)">
-        <p class="text-[11px] flex items-start gap-1.5 leading-relaxed" style="color:var(--text-3)">
-          <svg class="w-3 h-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-          </svg>
-          <span>${paradasText}</span>
-        </p>
-      </div>` : ''}
-
-    ${noDomingo ? `
-      <div class="mt-2 pt-2" style="border-top:1px solid #FEF3C7">
-        <p class="text-[11px] flex items-center gap-1.5" style="color:#D97706">
-          <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-          </svg>
-          No opera los domingos desde Andresito
-        </p>
-      </div>` : ''}
-
-    ${servicio.notas ? `
-      <div class="mt-2 pt-2" style="border-top:1px solid #FEE2E2">
-        <p class="text-[11px] flex items-center gap-1.5" style="color:var(--accent)">
-          <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          ${servicio.notas}
-        </p>
-      </div>` : ''}`;
+    ${notas ? `<div class="svc-foot">${notas}</div>` : ''}`;
 
   return div;
 }
@@ -923,9 +961,9 @@ function crearTarjetaOD(resultado, index) {
   const noDomingo   = !s.dias.includes('domingo');
 
   let badge = '';
-  if (esPasado)         badge = `<span style="background:rgba(0,0,0,.05);color:var(--text-3)" class="text-[10px] px-2 py-0.5 rounded-full">Partió</span>`;
-  else if (esInminente) badge = `<span style="background:rgba(239,68,68,.2);color:#DC2626;border:1px solid rgba(239,68,68,.3)" class="text-[10px] px-2 py-0.5 rounded-full font-bold animate-pulse">¡Sale ya!</span>`;
-  else if (esCercano)   badge = `<span style="background:rgba(255,76,26,.14);color:#FF4C1A;border:1px solid rgba(255,76,26,.30)" class="text-[10px] px-2 py-0.5 rounded-full">en ${diff} min</span>`;
+  if (esPasado)         badge = badgeTiempo('pasado',    'Partió');
+  else if (esInminente) badge = badgeTiempo('inminente', '¡Sale ya!');
+  else if (esCercano)   badge = badgeTiempo('cercano',   `en ${diff} min`);
 
   let durTramo = '';
   if (horaOrigen && horaDestino && horaOrigen !== '—' && horaDestino !== '—') {
@@ -937,60 +975,43 @@ function crearTarjetaOD(resultado, index) {
 
   const intermediate = tramo.slice(1, -1);
 
-  const div = document.createElement('div');
-  div.className = `card p-4 card-enter touch-feedback transition-smooth${esPasado ? ' opacity-40' : ''}`;
-  div.style.animationDelay = `${Math.min(index * 45, 600)}ms`;
+  const div = document.createElement('article');
+  div.className = `svc card-enter${esPasado ? ' is-past' : ''}`;
+  div.dataset.servicioId = s.id;
+  div.dataset.emp = s.empresa;
+  div.style.setProperty('--emp-raw', empresa.color);
+
+  const notas = [
+    intermediate.length > 0 ? nota('', 'paradas', `<span class="sr-only">Paradas intermedias: </span>${intermediate.join(' · ')}`) : '',
+    noDomingo ? nota('warn', 'alerta', 'No opera los domingos desde Andresito') : ''
+  ].join('');
 
   div.innerHTML = `
-    <div class="flex items-center justify-between gap-2 mb-4">
-      <span class="text-sm font-semibold" style="color:${empresa.color}">${empresa.icono} ${empresa.nombre}</span>
-      <div class="flex gap-1.5 flex-wrap justify-end">
-        ${s.numero   ? `<span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:${empresa.color}14;color:${empresa.color};border:1px solid ${empresa.color}38">N° ${s.numero}</span>` : ''}
-        ${s.servicio ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:#F5F4F1;color:var(--text-2);border:1px solid var(--border)">${s.servicio}</span>` : ''}
-        ${s.categoria !== 'Servicio regular' ? `<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:${empresa.color}12;color:${empresa.color};border:1px solid ${empresa.color}30">${s.categoria}</span>` : ''}
+    <div class="svc-head">
+      <span class="svc-emp"><span class="dot" aria-hidden="true"></span>${empresa.nombre}</span>
+      <div class="svc-tags">
+        ${s.numero   ? `<span class="badge badge-num">N° ${s.numero}</span>` : ''}
+        ${s.servicio ? `<span class="badge">${s.servicio}</span>` : ''}
+        ${s.categoria !== 'Servicio regular' ? `<span class="badge badge-cat">${s.categoria}</span>` : ''}
         ${badge}
       </div>
     </div>
 
-    <div class="flex items-end gap-3">
-      <div class="text-center flex-shrink-0">
-        <p class="text-3xl font-black leading-none" style="font-family:'Outfit',sans-serif;color:${esPasado ? 'var(--text-3)' : 'var(--text)'}">${(horaOrigen !== '—' ? horaOrigen : s.salida) ?? '—'}</p>
-        <p class="text-[11px] mt-1 max-w-[80px] truncate" style="color:var(--text-3)">${tramo[0]}</p>
+    <div class="svc-od">
+      <div class="od-end">
+        <span class="time num">${(horaOrigen !== '—' ? horaOrigen : s.salida) ?? '—'}</span>
+        <p class="od-place">${tramo[0]}</p>
       </div>
-      <div class="flex-1 flex flex-col items-center gap-0.5 pb-1.5">
-        ${durTramo ? `<span class="text-[10px]" style="color:var(--text-3)">${durTramo}</span>` : ''}
-        <div class="w-full flex items-center gap-1">
-          <div class="flex-1 border-t border-dashed" style="border-color:${empresa.color}50"></div>
-          <svg class="w-3 h-3 flex-shrink-0" style="color:${empresa.color}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-          </svg>
-        </div>
+      <div class="od-mid">
+        ${durTramo ? `<span class="od-dur">${durTramo}</span>` : ''}
+        <div class="od-arrow" aria-hidden="true">${icono('flecha', 'ico ico-sm')}</div>
       </div>
-      <div class="text-center flex-shrink-0">
-        <p class="text-3xl font-black leading-none" style="font-family:'Outfit',sans-serif;color:${esPasado ? 'var(--text-3)' : 'var(--text)'}">${(horaDestino !== '—' ? horaDestino : s.llegada) ?? '—'}</p>
-        <p class="text-[11px] mt-1 max-w-[80px] truncate" style="color:var(--text-3)">${tramo[tramo.length - 1]}</p>
+      <div class="od-end to">
+        <span class="time num">${(horaDestino !== '—' ? horaDestino : s.llegada) ?? '—'}</span>
+        <p class="od-place">${tramo[tramo.length - 1]}</p>
       </div>
     </div>
-
-    ${intermediate.length > 0 ? `
-      <div class="mt-3 pt-3" style="border-top:1px solid var(--border)">
-        <p class="text-[11px] flex items-start gap-1.5 leading-relaxed" style="color:var(--text-3)">
-          <svg class="w-3 h-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-          </svg>
-          <span>${intermediate.join(' · ')}</span>
-        </p>
-      </div>` : ''}
-
-    ${noDomingo ? `
-      <div class="mt-2 pt-2" style="border-top:1px solid #FEF3C7">
-        <p class="text-[11px] flex items-center gap-1.5" style="color:#D97706">
-          <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-          </svg>
-          No opera los domingos desde Andresito
-        </p>
-      </div>` : ''}`;
+    ${notas ? `<div class="svc-foot">${notas}</div>` : ''}`;
 
   return div;
 }
@@ -1016,9 +1037,9 @@ function registrarServiceWorker() {
 
 function mostrarToastActualizacion() {
   const toast = document.createElement('div');
-  toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 z-50 card rounded-2xl px-5 py-3 text-sm shadow-xl flex items-center gap-3';
-  toast.style.cssText = 'color:var(--text);white-space:nowrap';
-  toast.innerHTML = `<span>🔄 Hay una nueva versión disponible</span><button onclick="window.location.reload()" style="color:var(--accent);font-weight:700;font-size:12px;text-decoration:underline;background:none;border:none;cursor:pointer">Actualizar</button>`;
+  toast.className = 'toast-pop';
+  toast.setAttribute('role', 'status');
+  toast.innerHTML = `${icono('refrescar', 'ico')}<span>Hay una nueva versión disponible</span><button type="button" onclick="window.location.reload()">Actualizar</button>`;
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 8000);
 }
@@ -1123,9 +1144,9 @@ function inicializarCompartir() {
     } else {
       try { await navigator.clipboard.writeText(window.location.href); } catch (_) {}
       const t = document.createElement('div');
-      t.className = 'card fixed top-20 left-1/2 -translate-x-1/2 z-50 px-5 py-3 text-sm shadow-xl flex items-center gap-2';
-      t.style.cssText = 'color:var(--text);white-space:nowrap';
-      t.innerHTML = `<span>🔗</span><span>¡Enlace copiado al portapapeles!</span>`;
+      t.className = 'toast-pop';
+      t.setAttribute('role', 'status');
+      t.innerHTML = `${icono('enlace', 'ico')}<span>¡Enlace copiado al portapapeles!</span>`;
       document.body.appendChild(t);
       setTimeout(() => t.remove(), 3000);
     }

@@ -1,5 +1,5 @@
-const CACHE_STATIC  = 'andresito-static-v2';
-const CACHE_DYNAMIC = 'andresito-dynamic-v2';
+const CACHE_STATIC  = 'andresito-static-v3';
+const CACHE_DYNAMIC = 'andresito-dynamic-v3';
 
 const PRECACHE_URLS = [
   './',
@@ -7,6 +7,12 @@ const PRECACHE_URLS = [
   './app.js',
   './data.js',
   './style.css',
+  './tokens.css',
+  './fonts/BarlowSemiCondensed-600.woff2',
+  './fonts/BarlowSemiCondensed-700.woff2',
+  './fonts/SourceSans3-var.woff2',
+  './img/icon-192.png',
+  './img/icon-512.png',
   './admin.html',
   './manifest.json'
 ];

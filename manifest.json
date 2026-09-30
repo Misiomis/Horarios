@@ -6,8 +6,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#F6F4F0",
-  "theme_color": "#111111",
+  "background_color": "#F5F2EB",
+  "theme_color": "#153C35",
   "lang": "es-AR",
   "categories": ["transportation", "travel"],
   "icons": [

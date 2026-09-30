@@ -124,7 +124,7 @@ const APP_DATA = {
       origen:     'Cdte. Andresito',
       destino:    'Posadas',
       destinoId:  'posadas',
-      salida:     '01:45',
+      salida:     '01:30',
       llegada:    '07:00',
       paradas:    [],
       dias:       ['lv', 'sabado'],
@@ -140,7 +140,7 @@ const APP_DATA = {
       origen:     'Cdte. Andresito',
       destino:    'Posadas',
       destinoId:  'posadas',
-      salida:     '01:45',
+      salida:     '01:30',
       llegada:    '07:00',
       paradas:    [],
       dias:       ['lv', 'sabado'],
@@ -275,7 +275,7 @@ const APP_DATA = {
       notas:      ''
     },
 
-    // Andresito → Oberá (07:30) — todos los días
+    // Andresito → Oberá (07:10) — todos los días
     {
       id: 26,
       empresa:    'expresoSelva',
@@ -286,7 +286,7 @@ const APP_DATA = {
       origen:     'Cdte. Andresito',
       destino:    'Oberá',
       destinoId:  'obera',
-      salida:     '07:30',
+      salida:     '07:10',
       llegada:    null,
       paradas:    [],
       dias:       ['lv', 'sabado', 'domingo'],

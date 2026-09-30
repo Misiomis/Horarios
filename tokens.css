@@ -1,0 +1,158 @@
+/* ══════════════════════════════════════════════════════════════
+   tokens.css — Andresito Bus · capa visual compartida
+   Fuentes locales, tokens (color, espaciado, radios, tipografía)
+   y piezas base que usan tanto la app pública como el admin.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Fuentes locales (WOFF2, licencia OFL en /fonts) ── */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/BarlowSemiCondensed-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('fonts/BarlowSemiCondensed-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('fonts/SourceSans3-var.woff2') format('woff2');
+}
+
+:root {
+  /* Color — marca */
+  --green-900: #153C35;   /* marca y encabezado */
+  --green-800: #1E4D44;
+  --green-700: #2B6257;
+  --green-100: #E1EBE7;
+  --ivory:     #F5F2EB;   /* fondo general */
+  --surface:   #FFFFFF;
+  --ink:       #182822;   /* texto principal */
+  --ink-2:     #55645E;   /* texto secundario */
+  --line:      #DDDAD1;   /* separadores */
+  --line-strong: #8E8B7F; /* bordes de controles (≥3:1 sobre blanco) */
+  --terra:     #B94A2D;   /* acento terracota */
+  --terra-700: #973A21;
+  --terra-100: #F7E5DE;
+
+  /* Estados: texto + fondo (cada par ≥4.5:1) */
+  --ok-fg:    #1D6A3A;  --ok-bg:    #E5F2E9;  --ok-line:   #A9D3B6;
+  --warn-fg:  #7F4E00;  --warn-bg:  #FBEFD5;  --warn-line: #E6C77E;
+  --info-fg:  #1B5584;  --info-bg:  #E4EFF8;  --info-line: #A9C8E2;
+  --err-fg:   #9E2A1B;  --err-bg:   #FBE6E2;  --err-line:  #E9B0A6;
+
+  /* Espaciado (base 4/8) */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+
+  /* Radios moderados */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 14px;
+  --r-pill: 999px;
+
+  /* Sombras: solo una, leve */
+  --shadow-sm: 0 1px 2px rgba(24, 40, 34, .06);
+  --shadow-pop: 0 8px 24px rgba(24, 40, 34, .16);
+
+  /* Tipografía */
+  --font-display: 'Barlow Semi Condensed', 'Arial Narrow', 'Roboto Condensed', system-ui, sans-serif;
+  --font-text: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-label: .8125rem;   /* 13px */
+  --fs-small: .875rem;    /* 14px */
+  --fs-body:  1rem;       /* 16px */
+  --fs-time:  clamp(1.75rem, 1.4rem + 1.6vw, 2.25rem);   /* 28–36px horarios de lista */
+  --fs-next:  clamp(2.5rem, 1.9rem + 3vw, 3.25rem);      /* 40–52px próxima salida */
+
+  /* Movimiento */
+  --t-fast: 150ms;
+  --t-base: 200ms;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+
+  /* Alturas de elementos sticky (los sticky se calculan desde aquí) */
+  --header-h: 64px;
+  --touch: 44px;
+}
+
+/* Tonos accesibles para NOMBRES de empresa (texto ≥4.5:1 sobre blanco).
+   El color original de data.js se sigue usando en marcas no textuales (--emp-raw). */
+[data-emp="kruse"]         { --emp: #6D28D9; --emp-raw: #A78BFA; }
+[data-emp="expresoSelva"]  { --emp: #0B5F96; --emp-raw: #38BDF8; }
+[data-emp="solDelNorte"]   { --emp: #855400; --emp-raw: #FCD34D; }
+[data-emp="kenia"]         { --emp: #B01C1C; --emp-raw: #F87171; }
+[data-emp="pinalitoNorte"] { --emp: #046C4E; --emp-raw: #34D399; }
+[data-emp="itati"]         { --emp: #B93F0B; --emp-raw: #FB923C; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--ivory);
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, p { margin: 0; }
+
+/* Cifras tabulares en horarios y métricas */
+.num, .time, .tnum { font-family: var(--font-display); font-variant-numeric: tabular-nums lining-nums; font-feature-settings: 'tnum' 1, 'lnum' 1; }
+
+.hidden { display: none !important; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* Iconos SVG: mismo trazo y tamaños */
+.ico { width: 1.25rem; height: 1.25rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.ico-sm { width: 1rem; height: 1rem; }
+.ico-lg { width: 1.5rem; height: 1.5rem; }
+
+/* Foco visible */
+:focus-visible { outline: 3px solid var(--terra); outline-offset: 2px; border-radius: 4px; }
+
+/* Botones */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  min-height: var(--touch); padding: 0 var(--s-5);
+  font: 600 var(--fs-body)/1.2 var(--font-text);
+  border-radius: var(--r-md); border: 1.5px solid transparent; cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.btn-accent { background: var(--terra); color: #fff; }
+.btn-accent:hover { background: var(--terra-700); }
+.btn-accent:active { background: #7F2F19; }
+.btn-outline { background: var(--surface); color: var(--ink); border-color: var(--line-strong); }
+.btn-outline:hover { border-color: var(--green-900); color: var(--green-900); background: var(--green-100); }
+
+/* Campos de formulario */
+.input-clean, .input-field {
+  display: block; width: 100%; min-height: var(--touch);
+  padding: 10px var(--s-4);
+  font: 400 1rem/1.4 var(--font-text); color: var(--ink);
+  background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: var(--r-md);
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+.input-clean:hover, .input-field:hover { border-color: var(--ink-2); }
+.input-clean:focus, .input-field:focus { outline: none; border-color: var(--green-900); box-shadow: 0 0 0 3px rgba(21, 60, 53, .25); }
+.input-clean::placeholder, .input-field::placeholder { color: var(--ink-2); opacity: 1; }
+textarea.input-clean, textarea.input-field { resize: vertical; min-height: 104px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
